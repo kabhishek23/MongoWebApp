@@ -1,0 +1,24 @@
+.table-responsive {
+	overflow-x: hidden;
+}
+
+#timer-left {
+	left: 115px;
+	position: relative;
+}
+
+#timer-span {
+	left: 27px;
+	position: relative;
+	top: 2px;
+	font-size: 11px;
+}
+
+#panel-head {
+	position: relative;
+	right: 19px;
+}
+
+#table-response-id{
+	display: none;
+}
