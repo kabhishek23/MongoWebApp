@@ -1,4 +1,4 @@
-package com.bosch.mongoui.controller;
+package com.insfi.mongoui.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
