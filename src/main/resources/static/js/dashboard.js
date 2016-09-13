@@ -2,6 +2,8 @@ var table = "";
 
 $( document ).ready(function() {
 	datatableView();
+	
+	
 });
 
 /* json Viewer */
