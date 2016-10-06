@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html class="light">
+<html>
 <head>
 <title>BCP MongoDB UI</title>
 
@@ -11,10 +11,7 @@
 
 <link href="vendor/bootstrap/css/bootstrap-theme.min.css"
 	rel="stylesheet" type="text/css" />
-
-<!-- Bosch Theme CSS -->
-<link href="css/bosch-theme.css" rel="stylesheet" type="text/css" />
-
+	
 <!-- Custom Fonts -->
 <link href="css/custom.css" rel="stylesheet" type="text/css" />
 
@@ -22,7 +19,9 @@
 <link href="vendor/font-awesome-4.6.3/css/font-awesome.min.css"
 	rel="stylesheet" type="text/css" />
 
-
+<!-- Bootstap-Validator -->
+<link href="vendor/form-validator/css/formValidation.min.css"
+	rel="stylesheet" type="text/css" />
 
 </head>
 <body class="custom-body">
@@ -38,13 +37,13 @@
 
 					</div>
 					<div class="panel-body">
-						<form class="form-horizontal" role="form">
+						<form id="loginForm" class="form-horizontal" role="form">
 
 							<div class="form-group">
 								<label for="host" class="col-sm-3 control-label">Host</label>
 								<div class="col-sm-9">
-									<input class="form-control" id="host" value="127.0.0.1"
-										required="true" type="text" />
+									<input class="form-control" placeholder="Host"
+										required="true" type="text" name="host_ip" value="127.0.0.1" />
 								</div>
 							</div>
 
@@ -52,7 +51,7 @@
 								<label for="port" class="col-sm-3 control-label">Port</label>
 								<div class="col-sm-9">
 									<input class="form-control" id="port" value="27017" required=""
-										type="text" />
+										type="text" name="port" />
 								</div>
 							</div>
 
@@ -95,5 +94,30 @@
 
 </body>
 
-<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="vendor/jquery/jquery.min.js"></script>
+
+<!-- Bootstap-Validator -->
+<script type="text/javascript" src="vendor/form-validator/js/formValidation.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="vendor/bootstrap/js/bootstrap.js"></script>
+<script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+
+<!-- Metis Menu Plugin JavaScript -->
+<script src="vendor/metisMenu/metisMenu.min.js"></script>
+
+<!-- JSON Viewer -->
+<script type="text/javascript"
+	src="vendor/json-viewer/jquery.json-viewer.js"></script>
+
+<!-- DataTables JavaScript -->
+<script src="vendor/datatables/js/jquery.dataTables.min.js"></script>
+<script src="vendor/datatables-plugins/dataTables.bootstrap.min.js"></script>
+<script src="vendor/datatables-responsive/dataTables.responsive.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="dist/js/sb-admin-2.js"></script>
+
+<!-- Index.js -->
+<script type="text/javascript" src="js/index.js"></script>
 </html>

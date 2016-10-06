@@ -1,5 +1,5 @@
 $(document).ready(function() {
-	$('#loginForm').formValidation({
+	/*$('#loginForm').formValidation({
 		framework : 'bootstrap',
 		excluded: [':disabled'],
 		icon : {
@@ -29,5 +29,5 @@ $(document).ready(function() {
                 }
             }
 		}
-	});
+	});*/
 });
