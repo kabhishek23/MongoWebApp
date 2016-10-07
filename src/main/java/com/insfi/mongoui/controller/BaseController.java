@@ -25,6 +25,14 @@ import com.insfi.mongoui.services.AuthService;
 public class BaseController {
 	protected static final AuthService AUTH_SERVICE = null;
 
+	/**
+	 * Validate Connection for given ConnectionId
+	 * 
+	 * @param connectionId
+	 * @param logger
+	 * @param request
+	 * @return
+	 */
 	protected static JSONObject validateConnection(String connectionId, Logger logger, HttpServletRequest request) {
 		JSONObject response = new JSONObject();
 
@@ -47,6 +55,13 @@ public class BaseController {
 		return response;
 	}
 
+	/**
+	 * Prepare Error Response
+	 * 
+	 * @param logger
+	 * @param e
+	 * @return
+	 */
 	protected static JSONObject prepareErrorResponse(Logger logger, ApplicationException e) {
 		JSONObject errorResponse = new JSONObject();
 
@@ -59,6 +74,12 @@ public class BaseController {
 		return errorResponse;
 	}
 
+	/**
+	 * Error Template
+	 * 
+	 * @author abk6kor
+	 *
+	 */
 	protected static class ErrorTemplate {
 		public static JSONObject execute(Logger logger, ResponseCallback callback) {
 			JSONObject response = new JSONObject();
@@ -87,6 +108,12 @@ public class BaseController {
 
 	}
 
+	/**
+	 * Response Template
+	 * 
+	 * @author abk6kor
+	 *
+	 */
 	protected static class ResponseTemplate {
 
 		public JSONObject execute(Logger logger, String connectionId, HttpServletRequest request,
