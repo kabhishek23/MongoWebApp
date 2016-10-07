@@ -11,7 +11,7 @@ import com.mongodb.Mongo;
 
 public interface AuthService {
 
-	JSONObject authenticate(ConnectionDetails connectionDetails, Set<String> connectionPool)
+	String authenticate(ConnectionDetails connectionDetails, Set<String> connectionPool)
 			throws ApplicationException;
 
 	ConnectionProperties getConnectionProperties(String connectionId) throws ApplicationException;

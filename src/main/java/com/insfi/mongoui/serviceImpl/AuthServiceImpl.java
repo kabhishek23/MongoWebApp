@@ -1,7 +1,9 @@
 package com.insfi.mongoui.serviceImpl;
 
 import java.util.Collection;
+import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 
 import org.json.JSONObject;
@@ -20,18 +22,33 @@ import com.mongodb.Mongo;
 public class AuthServiceImpl implements AuthService {
 
 	private static AuthService AUTH_SERVICE = new AuthServiceImpl();
-	
+
 	private final AtomicLong SUCCESSFUL_CONNECTIONS_COUNT = new AtomicLong();
-	
-//	private Collection<ConnectionDetails> connectionDetailsCollection = 
+
+	private Map<String, Collection<ConnectionProperties>> connectionsCollection = new ConcurrentHashMap<String, Collection<ConnectionProperties>>();
 
 	private AuthServiceImpl() {
 	}
 
 	@Override
-	public JSONObject authenticate(ConnectionDetails connectionDetails, Set<String> connectionPool)
+	public String authenticate(ConnectionDetails connectionDetails, Set<String> connectionPool)
 			throws ApplicationException {
-		// TODO Auto-generated method stub
+		sanitizeConnectionDetails(connectionDetails);
+		String connectionDetailsHashCode = String.valueOf(connectionDetails.hashCode());
+
+		Collection<ConnectionProperties> connectionPropertiesList = connectionsCollection
+				.get(connectionDetailsHashCode);
+
+		if (connectionPool != null && connectionPropertiesList != null) {
+			for (ConnectionProperties connectionProperties : connectionPropertiesList) {
+				if (connectionPool.contains(connectionProperties.getConnectionId())
+						&& connectionDetails.equals(connectionProperties.getConnectionDetails())) {
+					return connectionProperties.getConnectionId();
+				}
+			}
+		}
+		
+		
 		return null;
 	}
 
