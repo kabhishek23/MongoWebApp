@@ -3,11 +3,11 @@ package com.insfi.mongoui.controller;
 import org.apache.log4j.Logger;
 import org.json.JSONObject;
 import org.springframework.http.MediaType;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
 
-@RestController
+@Controller
 public class LoginController extends BaseController {
 
 	private static Logger logger = Logger.getLogger(LoginController.class);

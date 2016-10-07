@@ -30,15 +30,15 @@ public class BaseController {
 
 		HttpSession session = request.getSession();
 
-		Set<String> connectionIdPoolInSession = (Set<String>) session.getAttribute("connectionIdPool");
+		Set<String> connectionPool = (Set<String>) session.getAttribute("connectionPool");
 
-		if (connectionIdPoolInSession == null) {
+		if (connectionPool == null) {
 			InvalidHTTPRequestException ex = new InvalidHTTPRequestException(ErrorCode.INVALID_SESSION,
 					"Invalid Session");
 			return prepareErrorResponse(logger, ex);
 		}
 
-		if (connectionId == null || !connectionIdPoolInSession.contains(connectionId)) {
+		if (connectionId == null || !connectionPool.contains(connectionId)) {
 			InvalidHTTPRequestException ex = new InvalidHTTPRequestException(ErrorCode.INVALID_CONNECTION,
 					"Invalid Connection");
 			return prepareErrorResponse(logger, ex);
