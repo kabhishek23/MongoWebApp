@@ -1,18 +1,26 @@
 package com.insfi.mongoui.serviceImpl;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 
-import org.json.JSONObject;
-
 import com.insfi.mongoui.db.ConnectionDetails;
-import com.insfi.mongoui.db.ConnectionProperties;
+import com.insfi.mongoui.db.MongoConnectionDetails;
 import com.insfi.mongoui.exceptions.ApplicationException;
+import com.insfi.mongoui.exceptions.ErrorCode;
 import com.insfi.mongoui.services.AuthService;
-import com.mongodb.Mongo;
+import com.mongodb.MongoClient;
+import com.mongodb.MongoClientOptions;
+import com.mongodb.MongoClientOptions.Builder;
+import com.mongodb.MongoException;
+import com.mongodb.ServerAddress;
+import com.mongodb.client.MongoCursor;
+import com.mongodb.client.MongoDatabase;
 
 /**
  * 
@@ -25,7 +33,7 @@ public class AuthServiceImpl implements AuthService {
 
 	private final AtomicLong SUCCESSFUL_CONNECTIONS_COUNT = new AtomicLong();
 
-	private Map<String, Collection<ConnectionProperties>> connectionsCollection = new ConcurrentHashMap<String, Collection<ConnectionProperties>>();
+	private Map<String, Collection<MongoConnectionDetails>> connectionsCollection = new ConcurrentHashMap<String, Collection<MongoConnectionDetails>>();
 
 	private AuthServiceImpl() {
 	}
@@ -36,38 +44,182 @@ public class AuthServiceImpl implements AuthService {
 		sanitizeConnectionDetails(connectionDetails);
 		String connectionDetailsHashCode = String.valueOf(connectionDetails.hashCode());
 
-		Collection<ConnectionProperties> connectionPropertiesList = connectionsCollection
+		Collection<MongoConnectionDetails> mongoConnectionDetailsList = connectionsCollection
 				.get(connectionDetailsHashCode);
 
-		if (connectionPool != null && connectionPropertiesList != null) {
-			for (ConnectionProperties connectionProperties : connectionPropertiesList) {
-				if (connectionPool.contains(connectionProperties.getConnectionId())
-						&& connectionDetails.equals(connectionProperties.getConnectionDetails())) {
-					return connectionProperties.getConnectionId();
+		if (connectionPool != null && mongoConnectionDetailsList != null) {
+			for (MongoConnectionDetails mongoConnectionDetails : mongoConnectionDetailsList) {
+				if (connectionPool.contains(mongoConnectionDetails.getConnectionId())
+						&& connectionDetails.equals(mongoConnectionDetails.getConnectionDetails())) {
+					return mongoConnectionDetails.getConnectionId();
 				}
 			}
 		}
-		
-		
-		return null;
+
+		MongoClient mongoClient = getMongoClient(connectionDetails);
+
+		String connectionId = SUCCESSFUL_CONNECTIONS_COUNT.incrementAndGet() + "_" + connectionDetailsHashCode;
+
+		if (mongoConnectionDetailsList == null) {
+			mongoConnectionDetailsList = new ArrayList<MongoConnectionDetails>(1);
+			connectionsCollection.put(connectionDetailsHashCode, mongoConnectionDetailsList);
+		}
+
+		mongoConnectionDetailsList.add(new MongoConnectionDetails(connectionId, mongoClient, connectionDetails));
+
+		return connectionId;
+	}
+
+	private MongoClient getMongoClient(ConnectionDetails connectionDetails) throws ApplicationException {
+		MongoClient mongoClient = null;
+
+		// server List
+		List<ServerAddress> serverAddressList = getServerAddressList(connectionDetails.getHostIp());
+
+		// MongoCredentials
+		// TODO : create Mongo Credentials
+
+		// MongoOptions
+		// TODO : Develop Connection manager to handle all sorts of auth
+		// services on mongo
+		Builder mongoOptions = new MongoClientOptions.Builder();
+		mongoOptions.connectTimeout(2000);
+
+		mongoClient = new MongoClient(connectionDetails.getHostIp(), connectionDetails.getPort());
+
+		/*
+		 * if (connectionDetails.getDbNames() != null) {
+		 * authenticateDatabases(mongoClient, connectionDetails); }
+		 */
+
+		// get Authenticated db list
+		getAuthenticatedDatabases(mongoClient, connectionDetails);
+
+		return mongoClient;
+	}
+
+	@Deprecated
+	private void authenticateDatabases(MongoClient mongoClient, ConnectionDetails connectionDetails)
+			throws ApplicationException {
+		String dbNames = connectionDetails.getDbNames();
+		String[] dbNamesList = dbNames.split(",");
+		String username = connectionDetails.getUsername();
+		String password = connectionDetails.getPassword();
+
+		for (String dbName : dbNamesList) {
+			boolean isDbAuthenticated = isDbAuthenticated(mongoClient, dbName);
+			if (isDbAuthenticated)
+				connectionDetails.addToAuthenticatedDbList(dbName);
+		}
+
+		if (connectionDetails.getAuthenticatedDbList().isEmpty()) {
+			throw new ApplicationException(("".equals(username) && "".equals(password)) ? ErrorCode.NEED_AUTHORISATION
+					: ErrorCode.INVALID_USER, "Invalid UserName or Password");
+		}
+
+	}
+
+	private void getAuthenticatedDatabases(MongoClient mongoClient, ConnectionDetails connectionDetails) {
+
+		MongoCursor<String> dbListItr = mongoClient.listDatabaseNames().iterator();
+		while (dbListItr.hasNext()) {
+			connectionDetails.addToAuthenticatedDbList(dbListItr.next());
+		}
+	}
+
+	@Deprecated
+	private boolean isDbAuthenticated(MongoClient mongoClient, String dbName) {
+		boolean isAuthenticated = false;
+		dbName = dbName.trim();
+
+		MongoDatabase db = mongoClient.getDatabase(dbName);
+
+		try {
+			db.listCollectionNames();
+			isAuthenticated = true;
+		} catch (MongoException me) {
+			isAuthenticated = false;
+		}
+		return isAuthenticated;
+	}
+
+	private List<ServerAddress> getServerAddressList(String serverAddressString) {
+		List<ServerAddress> serverAddressList = new ArrayList<ServerAddress>();
+		return serverAddressList;
 	}
 
 	@Override
-	public ConnectionProperties getConnectionProperties(String connectionId) throws ApplicationException {
-		// TODO Auto-generated method stub
-		return null;
+	public MongoConnectionDetails getMongoConnectionDetails(String connectionId) throws ApplicationException {
+		String[] connectionExtract = connectionId.split("_");
+		if (connectionExtract.length != 2) {
+			throw new ApplicationException(ErrorCode.INVALID_CONNECTION, "Invalid Connection");
+		}
+
+		String connectionHashCode = String.valueOf(connectionExtract[1]);
+		Collection<MongoConnectionDetails> mongoConnectionDetailsList = connectionsCollection.get(connectionHashCode);
+
+		if (mongoConnectionDetailsList == null) {
+			throw new ApplicationException(ErrorCode.INVALID_CONNECTION, "Invalid Connection");
+		}
+
+		for (MongoConnectionDetails mongoConnectionDetails : mongoConnectionDetailsList) {
+			if (connectionId.equals(mongoConnectionDetails.getConnectionId())) {
+				return mongoConnectionDetails;
+			}
+		}
+
+		throw new ApplicationException(ErrorCode.INVALID_CONNECTION, "Invalid Connection");
 	}
 
 	@Override
-	public Mongo getMongoInstace(String connectionId) throws ApplicationException {
-		// TODO Auto-generated method stub
-		return null;
+	public MongoClient getMongoClientInstace(String connectionId) throws ApplicationException {
+		String[] connectionExtract = connectionId.split("_");
+		if (connectionExtract.length != 2) {
+			throw new ApplicationException(ErrorCode.INVALID_CONNECTION, "Invalid Connection");
+		}
+
+		String connectionHashCode = String.valueOf(connectionExtract[1]);
+		Collection<MongoConnectionDetails> mongoConnectionDetailsList = connectionsCollection.get(connectionHashCode);
+
+		if (mongoConnectionDetailsList == null) {
+			throw new ApplicationException(ErrorCode.INVALID_CONNECTION, "Invalid Connection");
+		}
+
+		for (MongoConnectionDetails mongoConnectionDetails : mongoConnectionDetailsList) {
+			if (connectionId.equals(mongoConnectionDetails.getConnectionId())) {
+				return mongoConnectionDetails.getMongoClient();
+			}
+		}
+
+		throw new ApplicationException(ErrorCode.INVALID_CONNECTION, "Invalid Connection");
 	}
 
 	@Override
 	public void disconnect(String connectionId) throws ApplicationException {
-		// TODO Auto-generated method stub
+		String[] connectionExtract = connectionId.split("_");
+		if (connectionExtract.length != 2) {
+			throw new ApplicationException(ErrorCode.INVALID_CONNECTION, "Invalid Connection");
+		}
 
+		String connectionHashCode = String.valueOf(connectionExtract[1]);
+		Collection<MongoConnectionDetails> mongoConnectionDetailsList = connectionsCollection.get(connectionHashCode);
+
+		if (mongoConnectionDetailsList == null) {
+			throw new ApplicationException(ErrorCode.INVALID_CONNECTION, "Invalid Connection");
+		}
+
+		Iterator<MongoConnectionDetails> mongoConnectionDetailsIterator = mongoConnectionDetailsList.iterator();
+
+		while (mongoConnectionDetailsIterator.hasNext()) {
+			MongoConnectionDetails mongoConnectionDetails = mongoConnectionDetailsIterator.next();
+			if (connectionId.equals(mongoConnectionDetails.getConnectionId())) {
+				mongoConnectionDetails.getMongoClient().close();
+				mongoConnectionDetailsIterator.remove();
+				return;
+			}
+		}
+
+		throw new ApplicationException(ErrorCode.INVALID_CONNECTION, "Invalid Connection");
 	}
 
 	private void sanitizeConnectionDetails(ConnectionDetails connectionDetails) {

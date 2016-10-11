@@ -1,22 +1,16 @@
 package com.insfi.mongoui.serviceImpl;
 
-import static org.junit.Assert.*;
-
 import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
-public class AuthServiceImplTest {
+import com.insfi.mongoui.db.ConnectionDetails;
+import com.insfi.mongoui.exceptions.ApplicationException;
+import com.insfi.mongoui.services.AuthService;
 
-	@BeforeClass
-	public static void setUpBeforeClass() throws Exception {
-	}
+import junit.framework.TestCase;
 
-	@AfterClass
-	public static void tearDownAfterClass() throws Exception {
-	}
+public class AuthServiceImplTest extends TestCase {
 
 	@Before
 	public void setUp() throws Exception {
@@ -28,7 +22,17 @@ public class AuthServiceImplTest {
 
 	@Test
 	public void testAuthenticate() {
-		fail("Not yet implemented");
+		ConnectionDetails connectionDetails = new ConnectionDetails("localhost", 27017, null, null, "sometest");
+		AuthService AUTH_SERVICE = AuthServiceImpl.getInstance();
+		String connectionId = null;
+		try {
+			connectionId = AUTH_SERVICE.authenticate(connectionDetails, null);
+		} catch (ApplicationException e) {
+			fail("failed :" + e.getMessage());
+		}
+
+		assertNotNull(connectionId);
+		assertNotNull(connectionDetails.getAuthenticatedDbList());
 	}
 
 	@Test

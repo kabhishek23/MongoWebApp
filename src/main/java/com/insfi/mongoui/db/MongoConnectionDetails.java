@@ -1,16 +1,16 @@
 package com.insfi.mongoui.db;
 
-import com.mongodb.Mongo;
+import com.mongodb.MongoClient;
 
-public class ConnectionProperties {
+public class MongoConnectionDetails {
 	private String connectionId;
-	private Mongo mongo;
+	private MongoClient mongoClient;
 	private ConnectionDetails connectionDetails;
 
-	public ConnectionProperties(String connectionId, Mongo mongo, ConnectionDetails connectionDetails) {
+	public MongoConnectionDetails(String connectionId, MongoClient mongoClient, ConnectionDetails connectionDetails) {
 		super();
 		this.connectionId = connectionId;
-		this.mongo = mongo;
+		this.mongoClient = mongoClient;
 		this.connectionDetails = connectionDetails;
 	}
 
@@ -18,8 +18,8 @@ public class ConnectionProperties {
 		return connectionId;
 	}
 
-	public Mongo getMongo() {
-		return mongo;
+	public MongoClient getMongoClient() {
+		return mongoClient;
 	}
 
 	public ConnectionDetails getConnectionDetails() {

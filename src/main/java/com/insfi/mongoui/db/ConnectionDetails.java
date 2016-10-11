@@ -8,15 +8,16 @@ public class ConnectionDetails {
 	private int port;
 	private String username;
 	private String password;
-	private Set<String> dbList = new HashSet<>();
+	private String dbNames;
+	private Set<String> authenticateddbList = new HashSet<String>();
 
-	public ConnectionDetails(String hostIp, int port, String username, String password, Set<String> dbList) {
+	public ConnectionDetails(String hostIp, int port, String username, String password, String dbNames) {
 		super();
 		this.hostIp = hostIp;
 		this.port = port;
 		this.username = username;
 		this.password = password;
-		this.dbList = dbList;
+		this.dbNames = dbNames;
 	}
 
 	public String getHostIp() {
@@ -51,16 +52,24 @@ public class ConnectionDetails {
 		this.password = password;
 	}
 
-	public Set<String> getDbList() {
-		return dbList;
+	public String getDbNames() {
+		return dbNames;
 	}
 
-	public void addToDbList(Set<String> dbList) {
-		this.dbList = dbList;
+	public void setDbNames(String dbNames) {
+		this.dbNames = dbNames;
+	}
+
+	public Set<String> getAuthenticatedDbList() {
+		return this.authenticateddbList;
+	}
+
+	public void addToAuthenticatedDbList(String authenticatedDb) {
+		this.authenticateddbList.add(authenticatedDb);
 	}
 
 	public boolean isAdminLogin() {
-		return dbList.contains("admin");
+		return authenticateddbList.contains("admin");
 	}
 
 	@Override
@@ -77,7 +86,7 @@ public class ConnectionDetails {
 		if (port != that.port) {
 			return false;
 		}
-		if (dbList != null ? !dbList.equals(that.dbList) : that.dbList != null) {
+		if (dbNames != null ? !dbNames.equals(that.dbNames) : that.dbNames != null) {
 			return false;
 		}
 		if (hostIp != null ? !hostIp.equals(that.hostIp) : that.hostIp != null) {
@@ -99,7 +108,7 @@ public class ConnectionDetails {
 		result = 31 * result + port;
 		result = 31 * result + (username != null ? username.hashCode() : 0);
 		result = 31 * result + (password != null ? password.hashCode() : 0);
-		result = 31 * result + (dbList != null ? dbList.hashCode() : 0);
+		result = 31 * result + (dbNames != null ? dbNames.hashCode() : 0);
 		if (result == Integer.MIN_VALUE) {
 			return Integer.MAX_VALUE;
 		}

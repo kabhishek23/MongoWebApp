@@ -1,16 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<class-diagram version="1.1.11" icons="true" always-add-relationships="false" generalizations="true" realizations="true" 
+<class-diagram version="1.1.10" icons="true" always-add-relationships="false" generalizations="true" realizations="true" 
   associations="true" dependencies="false" nesting-relationships="true" router="FAN">  
-  <interface id="1" language="java" name="com.insfi.mongoui.services.AuthService" project="MongoWebApp" 
-    file="/MongoWebApp/src/main/java/com/insfi/mongoui/services/AuthService.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="135" width="318" x="497" y="248"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="true" package="true" protected="true" private="true" static="true"/>    
-    </display>  
-  </interface>  
-  <interface id="2" language="java" name="com.insfi.mongoui.services.CollectionService" project="MongoWebApp" 
+  <interface id="1" language="java" name="com.insfi.mongoui.services.CollectionService" project="MongoWebApp" 
     file="/MongoWebApp/src/main/java/com/insfi/mongoui/services/CollectionService.java" binary="false" 
     corner="BOTTOM_RIGHT">    
     <position height="153" width="343" x="1600" y="248"/>    
@@ -20,7 +11,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </interface>  
-  <interface id="3" language="java" name="com.insfi.mongoui.services.DatabaseService" project="MongoWebApp" 
+  <interface id="2" language="java" name="com.insfi.mongoui.services.DatabaseService" project="MongoWebApp" 
     file="/MongoWebApp/src/main/java/com/insfi/mongoui/services/DatabaseService.java" binary="false" 
     corner="BOTTOM_RIGHT">    
     <position height="153" width="344" x="855" y="248"/>    
@@ -30,7 +21,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </interface>  
-  <interface id="4" language="java" name="com.insfi.mongoui.services.DocumentService" project="MongoWebApp" 
+  <interface id="3" language="java" name="com.insfi.mongoui.services.DocumentService" project="MongoWebApp" 
     file="/MongoWebApp/src/main/java/com/insfi/mongoui/services/DocumentService.java" binary="false" 
     corner="BOTTOM_RIGHT">    
     <position height="135" width="416" x="41" y="248"/>    
@@ -40,7 +31,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </interface>  
-  <class id="5" language="java" name="com.insfi.mongoui.serviceImpl.DocumentServiceImpl" project="MongoWebApp" 
+  <class id="4" language="java" name="com.insfi.mongoui.serviceImpl.DocumentServiceImpl" project="MongoWebApp" 
     file="/MongoWebApp/src/main/java/com/insfi/mongoui/serviceImpl/DocumentServiceImpl.java" binary="false" 
     corner="BOTTOM_RIGHT">    
     <position height="153" width="416" x="41" y="37"/>    
@@ -50,7 +41,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="6" language="java" name="com.insfi.mongoui.serviceImpl.DatabaseServiceImpl" project="MongoWebApp" 
+  <class id="5" language="java" name="com.insfi.mongoui.serviceImpl.DatabaseServiceImpl" project="MongoWebApp" 
     file="/MongoWebApp/src/main/java/com/insfi/mongoui/serviceImpl/DatabaseServiceImpl.java" binary="false" 
     corner="BOTTOM_RIGHT">    
     <position height="171" width="344" x="855" y="37"/>    
@@ -60,7 +51,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="7" language="java" name="com.insfi.mongoui.serviceImpl.CollectionServiceImpl" project="MongoWebApp" 
+  <class id="6" language="java" name="com.insfi.mongoui.serviceImpl.CollectionServiceImpl" project="MongoWebApp" 
     file="/MongoWebApp/src/main/java/com/insfi/mongoui/serviceImpl/CollectionServiceImpl.java" binary="false" 
     corner="BOTTOM_RIGHT">    
     <position height="171" width="343" x="1600" y="37"/>    
@@ -70,7 +61,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="8" language="java" name="com.insfi.mongoui.serviceImpl.AuthServiceImpl" project="MongoWebApp" 
+  <class id="7" language="java" name="com.insfi.mongoui.serviceImpl.AuthServiceImpl" project="MongoWebApp" 
     file="/MongoWebApp/src/main/java/com/insfi/mongoui/serviceImpl/AuthServiceImpl.java" binary="false" 
     corner="BOTTOM_RIGHT">    
     <position height="153" width="318" x="497" y="37"/>    
@@ -80,7 +71,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="9" language="java" name="com.insfi.mongoui.db.ConnectionDetails" project="MongoWebApp" 
+  <class id="8" language="java" name="com.insfi.mongoui.db.ConnectionDetails" project="MongoWebApp" 
     file="/MongoWebApp/src/main/java/com/insfi/mongoui/db/ConnectionDetails.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="351" width="283" x="1239" y="248"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
@@ -89,8 +80,8 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="10" language="java" name="com.insfi.mongoui.db.ConnectionProperties" project="MongoWebApp" 
-    file="/MongoWebApp/src/main/java/com/insfi/mongoui/db/ConnectionProperties.java" binary="false" 
+  <class id="9" language="java" name="com.insfi.mongoui.db.MongoConnectionDetails" project="MongoWebApp" 
+    file="/MongoWebApp/src/main/java/com/insfi/mongoui/db/MongoConnectionDetails.java" binary="false" 
     corner="BOTTOM_RIGHT">    
     <position height="171" width="321" x="1239" y="37"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
@@ -99,29 +90,29 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <realization id="11">    
-    <end type="SOURCE" refId="7"/>    
+  <realization id="10">    
+    <end type="SOURCE" refId="5"/>    
     <end type="TARGET" refId="2"/>  
   </realization>  
-  <association id="12">    
-    <end type="SOURCE" refId="10" navigable="false">      
-      <attribute id="13" name="connectionDetails"/>      
-      <multiplicity id="14" minimum="0" maximum="1"/>    
+  <association id="11">    
+    <end type="SOURCE" refId="9" navigable="false">      
+      <attribute id="12" name="connectionDetails">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="13" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
     </end>    
-    <end type="TARGET" refId="9" navigable="true"/>    
+    <end type="TARGET" refId="8" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <realization id="15">    
+  <realization id="14">    
     <end type="SOURCE" refId="6"/>    
-    <end type="TARGET" refId="3"/>  
-  </realization>  
-  <realization id="16">    
-    <end type="SOURCE" refId="8"/>    
     <end type="TARGET" refId="1"/>  
   </realization>  
-  <realization id="17">    
-    <end type="SOURCE" refId="5"/>    
-    <end type="TARGET" refId="4"/>  
+  <realization id="15">    
+    <end type="SOURCE" refId="4"/>    
+    <end type="TARGET" refId="3"/>  
   </realization>  
   <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
     sort-features="false" accessors="true" visibility="true">    

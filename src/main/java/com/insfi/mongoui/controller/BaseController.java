@@ -10,7 +10,7 @@ import org.json.JSONObject;
 
 import com.insfi.mongoui.exceptions.ApplicationException;
 import com.insfi.mongoui.exceptions.CollectionException;
-import com.insfi.mongoui.exceptions.ConnectionException;
+import com.insfi.mongoui.exceptions.MongoConnectionException;
 import com.insfi.mongoui.exceptions.DatabaseException;
 import com.insfi.mongoui.exceptions.DocumentException;
 import com.insfi.mongoui.exceptions.ErrorCode;
@@ -38,7 +38,7 @@ public class BaseController {
 
 		HttpSession session = request.getSession();
 
-		Set<String> connectionPool = (Set<String>) session.getAttribute("connectionPool");
+		Set<String> connectionPool = (Set<String>) session.getAttribute("existingConnectionIdsInSession");
 
 		if (connectionPool == null) {
 			InvalidHTTPRequestException ex = new InvalidHTTPRequestException(ErrorCode.INVALID_SESSION,
@@ -86,7 +86,7 @@ public class BaseController {
 
 			try {
 				response = (JSONObject) callback.execute();
-			} catch (ConnectionException e) {
+			} catch (MongoConnectionException e) {
 				response = prepareErrorResponse(logger, e);
 			} catch (DatabaseException e) {
 				response = prepareErrorResponse(logger, e);
