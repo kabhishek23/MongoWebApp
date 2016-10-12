@@ -17,5 +17,7 @@ public interface ErrorCode {
 	
 	public static final String MONGO_CONNECTION_EXCEPTION = "MONGO_CONNECTION_EXCEPTION";
 	
+	public static final String INVALID_AUTH_MECHANISM = "INVALID_AUTH_MECHANISM";
+	
 
 }
