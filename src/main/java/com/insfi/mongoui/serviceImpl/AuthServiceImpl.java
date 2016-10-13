@@ -9,14 +9,20 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 
+import org.springframework.boot.autoconfigure.security.AuthenticationManagerConfiguration;
+
+import com.insfi.mongoui.credentials.AuthenticationMechanismFactory;
+import com.insfi.mongoui.credentials.CredentialManager;
 import com.insfi.mongoui.db.ConnectionDetails;
 import com.insfi.mongoui.db.MongoConnectionDetails;
 import com.insfi.mongoui.exceptions.ApplicationException;
 import com.insfi.mongoui.exceptions.ErrorCode;
+import com.insfi.mongoui.exceptions.MongoConnectionException;
 import com.insfi.mongoui.services.AuthService;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientOptions;
 import com.mongodb.MongoClientOptions.Builder;
+import com.mongodb.MongoCredential;
 import com.mongodb.MongoException;
 import com.mongodb.ServerAddress;
 import com.mongodb.client.MongoCursor;
@@ -77,7 +83,7 @@ public class AuthServiceImpl implements AuthService {
 		List<ServerAddress> serverAddressList = getServerAddressList(connectionDetails.getHostIp());
 
 		// MongoCredentials
-		// TODO : create Mongo Credentials
+		MongoCredential credentials = getMongoCredentials(connectionDetails);
 
 		// MongoOptions
 		// TODO : Develop Connection manager to handle all sorts of auth
@@ -87,15 +93,26 @@ public class AuthServiceImpl implements AuthService {
 
 		mongoClient = new MongoClient(connectionDetails.getHostIp(), connectionDetails.getPort());
 
-		/*
-		 * if (connectionDetails.getDbNames() != null) {
-		 * authenticateDatabases(mongoClient, connectionDetails); }
-		 */
-
 		// get Authenticated db list
 		getAuthenticatedDatabases(mongoClient, connectionDetails);
 
 		return mongoClient;
+	}
+
+	/**
+	 * Create MongoCredentials
+	 * 
+	 * @param connectionDetails
+	 * @return
+	 * @throws ApplicationException
+	 */
+	private MongoCredential getMongoCredentials(ConnectionDetails connectionDetails) throws ApplicationException {
+		CredentialManager credentialManager = new AuthenticationMechanismFactory();
+		MongoCredential mongoCredentials = credentialManager.createCredentials(connectionDetails.getUsername(),
+				connectionDetails.getDbNames(), connectionDetails.getPassword());
+
+		return mongoCredentials;
+
 	}
 
 	@Deprecated
@@ -143,8 +160,15 @@ public class AuthServiceImpl implements AuthService {
 		return isAuthenticated;
 	}
 
-	private List<ServerAddress> getServerAddressList(String serverAddressString) {
+	private List<ServerAddress> getServerAddressList(String serverAddressString) throws ApplicationException {
 		List<ServerAddress> serverAddressList = new ArrayList<ServerAddress>();
+		if(serverAddressString == null || "".equals(serverAddressString)) {
+			throw new MongoConnectionException(ErrorCode.EMPTY_HOST_ADDRESS, "Empty Server Address");
+		}
+		
+		String[] addresses = serverAddressString.split(",");
+		
+		
 		return serverAddressList;
 	}
 
