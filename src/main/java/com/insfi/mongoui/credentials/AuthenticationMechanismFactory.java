@@ -1,6 +1,7 @@
 package com.insfi.mongoui.credentials;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.insfi.mongoui.configuration.MongoConfig;
 import com.insfi.mongoui.exceptions.ApplicationException;
@@ -10,10 +11,11 @@ import com.mongodb.AuthenticationMechanism;
 import com.mongodb.MongoCredential;
 import com.mongodb.MongoException;
 
+@Component
 public class AuthenticationMechanismFactory implements CredentialManager {
-	
+
 	@Autowired
-	private MongoConfig mongoConfig;
+	private MongoConfig mongoConfiguration;
 
 	private static AuthenticationMechanism mechanism;
 
@@ -77,15 +79,22 @@ public class AuthenticationMechanismFactory implements CredentialManager {
 
 	/**
 	 * Read Authentication Mechanism Setting from configuration and return
-	 * AuthenticationMechanism
-	 * TODO : Read Configuration file to get supported Authentication Mechanism 
+	 * AuthenticationMechanism TODO : Read Configuration file to get supported
+	 * Authentication Mechanism
+	 * 
 	 * @return
 	 * @throws ApplicationException
 	 */
 	private void getMechanismName() throws ApplicationException {
-		
+
+		String mechanismName = mongoConfiguration.getAuthMechanism();
+
+		if (mechanismName == null) {
+			throw new MongoConnectionException(ErrorCode.INVALID_AUTH_MECHANISM, "Invalid Auth Mechanism");
+		}
+
 		try {
-			mechanism = AuthenticationMechanism.fromMechanismName(mongoConfig.getAuthMechanism());
+			mechanism = AuthenticationMechanism.fromMechanismName(mechanismName);
 		} catch (MongoException me) {
 			throw new MongoConnectionException(ErrorCode.INVALID_AUTH_MECHANISM, "Invalid Auth Mechanism");
 		}

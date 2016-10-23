@@ -19,7 +19,7 @@ public class MongoConfigTest {
 	@Test
 	public void testGetAuthMechanism() {
 
-		String authMechanism = "PLAIN";
+		String authMechanism = "SCRAM-SHA-1";
 
 		Assert.isTrue(authMechanism.equals(config.getAuthMechanism()));
 
