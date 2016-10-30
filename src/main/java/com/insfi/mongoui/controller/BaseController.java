@@ -2,6 +2,7 @@ package com.insfi.mongoui.controller;
 
 import java.util.Set;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -10,11 +11,11 @@ import org.json.JSONObject;
 
 import com.insfi.mongoui.exceptions.ApplicationException;
 import com.insfi.mongoui.exceptions.CollectionException;
-import com.insfi.mongoui.exceptions.MongoConnectionException;
 import com.insfi.mongoui.exceptions.DatabaseException;
 import com.insfi.mongoui.exceptions.DocumentException;
 import com.insfi.mongoui.exceptions.ErrorCode;
 import com.insfi.mongoui.exceptions.InvalidHTTPRequestException;
+import com.insfi.mongoui.exceptions.MongoConnectionException;
 import com.insfi.mongoui.services.AuthService;
 
 /**
@@ -22,8 +23,10 @@ import com.insfi.mongoui.services.AuthService;
  * @author abhishek
  *
  */
+@Resource
 public class BaseController {
-	protected static final AuthService AUTH_SERVICE = null;
+
+	protected static AuthService AUTH_SERVICE;
 
 	/**
 	 * Validate Connection for given ConnectionId
@@ -34,7 +37,7 @@ public class BaseController {
 	 * @return
 	 */
 	protected static JSONObject validateConnection(String connectionId, Logger logger, HttpServletRequest request) {
-		JSONObject response = new JSONObject();
+		JSONObject response = null;
 
 		HttpSession session = request.getSession();
 
@@ -74,6 +77,15 @@ public class BaseController {
 		return errorResponse;
 	}
 
+	protected static JSONObject prepareSuccessResponse(ResponseCallback callback) throws Exception {
+		JSONObject response = new JSONObject();
+		
+		response.put("success", true);
+		response = (JSONObject) callback.execute();
+		
+		return response;
+	}
+
 	/**
 	 * Error Template
 	 * 
@@ -85,7 +97,7 @@ public class BaseController {
 			JSONObject response = new JSONObject();
 
 			try {
-				response = (JSONObject) callback.execute();
+				response = prepareSuccessResponse(callback);
 			} catch (MongoConnectionException e) {
 				response = prepareErrorResponse(logger, e);
 			} catch (DatabaseException e) {

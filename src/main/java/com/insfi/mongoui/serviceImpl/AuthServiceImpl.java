@@ -11,7 +11,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import com.insfi.mongoui.credentials.AuthenticationMechanismFactory;
 import com.insfi.mongoui.db.ConnectionDetails;
@@ -34,7 +34,7 @@ import com.mongodb.client.MongoDatabase;
  * @author abhishek
  *
  */
-@Component
+@Service
 public class AuthServiceImpl implements AuthService {
 
 	private static AuthServiceImpl AUTH_SERVICE;
@@ -47,6 +47,7 @@ public class AuthServiceImpl implements AuthService {
 	private AuthenticationMechanismFactory credentialManager;
 
 	private AuthServiceImpl() {
+		// TODO Auto-generated constructor stub	
 	}
 
 	@Override

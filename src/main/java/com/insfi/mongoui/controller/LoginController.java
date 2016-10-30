@@ -22,18 +22,26 @@ import com.insfi.mongoui.exceptions.ApplicationException;
 import com.insfi.mongoui.exceptions.ErrorCode;
 import com.insfi.mongoui.exceptions.MongoConnectionException;
 import com.insfi.mongoui.models.LoginFormModel;
+import com.insfi.mongoui.services.AuthService;
 import com.mongodb.MongoException;
 
 @Controller
 public class LoginController extends BaseController {
 
+	public LoginController() {
+		// TODO Auto-generated constructor stub
+	}
+
 	@Autowired
-	private HttpServletRequest request;
+	public LoginController(AuthService auth) {
+		AUTH_SERVICE = auth;
+	}
 
 	private static Logger logger = Logger.getLogger(LoginController.class);
 
 	@RequestMapping(value = "/login", method = RequestMethod.POST, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-	public JSONObject authenticate(@ModelAttribute("loginForm") LoginFormModel loginForm, BindingResult result) {
+	public JSONObject authenticate(@ModelAttribute("loginForm") LoginFormModel loginForm, BindingResult result,
+			HttpServletRequest request) {
 
 		JSONObject response = ErrorTemplate.execute(logger, new ResponseCallback() {
 
@@ -83,7 +91,6 @@ public class LoginController extends BaseController {
 
 				JSONObject response = new JSONObject();
 				try {
-					response.put("success", true);
 					response.put("connectionId", connectionId);
 				} catch (JSONException e) {
 					logger.error(e);

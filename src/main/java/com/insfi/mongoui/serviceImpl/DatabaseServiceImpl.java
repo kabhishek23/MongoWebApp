@@ -8,7 +8,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import com.insfi.mongoui.db.ConnectionDetails;
 import com.insfi.mongoui.db.MongoConnectionDetails;
@@ -24,7 +24,8 @@ import com.mongodb.MongoClient;
  * @author abhishek
  *
  */
-@Component
+
+@Service
 public class DatabaseServiceImpl implements DatabaseService {
 
 	private static AuthService AUTH_SERVICE;
@@ -32,12 +33,16 @@ public class DatabaseServiceImpl implements DatabaseService {
 	private ConnectionDetails connectionDetails;
 	private MongoClient mongoClient;
 
+	@Autowired
+	public DatabaseServiceImpl(AuthService auth) {
+		AUTH_SERVICE = auth;
+	}
+
 	public DatabaseServiceImpl() {
 		// TODO Auto-generated constructor stub
 	}
 
 	public DatabaseServiceImpl(String connectionId) throws ApplicationException {
-		AUTH_SERVICE = AuthServiceImpl.getInstance();
 		MongoConnectionDetails mongoConnectionDetails = AUTH_SERVICE.getMongoConnectionDetails(connectionId);
 		mongoClient = mongoConnectionDetails.getMongoClient();
 		connectionDetails = mongoConnectionDetails.getConnectionDetails();
