@@ -1,18 +1,18 @@
 package com.insfi.mongoui.models;
 
 public class LoginFormModel {
-	private String hostIp;
+	private String host;
 	private int port;
 	private String database;
 	private String username;
 	private String password;
 
-	public String getHostIp() {
-		return hostIp;
+	public String getHost() {
+		return host;
 	}
 
-	public void setHostIp(String hostIp) {
-		this.hostIp = hostIp;
+	public void setHost(String host) {
+		this.host = host;
 	}
 
 	public int getPort() {

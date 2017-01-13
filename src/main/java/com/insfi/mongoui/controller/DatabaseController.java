@@ -1,7 +1,6 @@
 package com.insfi.mongoui.controller;
 
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -45,6 +44,33 @@ public class DatabaseController extends BaseController {
 		return response;
 	}
 
+	@RequestMapping(value = "/{dbName}/stats", method = RequestMethod.GET)
+	public JSONObject getDatabaseStats(@RequestParam("dbName") final String dbName,
+			@RequestParam("connectionId") final String connectionId, HttpServletRequest request) {
+
+		JSONObject response = new ResponseTemplate().execute(logger, connectionId, request, new ResponseCallback() {
+
+			@Override
+			public Object execute() throws Exception {
+				DatabaseService dbService = new DatabaseServiceImpl(connectionId);
+				String statsStr = dbService.getDbStats(dbName);
+
+				return new JSONObject(statsStr);
+			}
+		});
+
+		return response;
+
+	}
+
+	/**
+	 * TODO : Implement this later when required
+	 * 
+	 * @param dbName
+	 * @param connectionId
+	 * @param request
+	 * @return
+	 */
 	@RequestMapping(value = "/{dbName}", method = RequestMethod.PUT)
 	public JSONObject createDatabase(@RequestParam("dbName") final String dbName,
 			@RequestParam("connectionId") final String connectionId, HttpServletRequest request) {
@@ -60,6 +86,14 @@ public class DatabaseController extends BaseController {
 		return response;
 	}
 
+	/**
+	 * TODO : Implement this later when required
+	 * 
+	 * @param dbName
+	 * @param connectionId
+	 * @param request
+	 * @return
+	 */
 	@RequestMapping(value = "/{dbName}", method = RequestMethod.DELETE)
 	public JSONObject deleteDatabase(@RequestParam("dbName") final String dbName,
 			@RequestParam("connectionId") final String connectionId, HttpServletRequest request) {
@@ -90,4 +124,5 @@ public class DatabaseController extends BaseController {
 
 		return response;
 	}
+
 }

@@ -48,7 +48,7 @@ public class LoginController extends BaseController {
 			@Override
 			public Object execute() throws Exception {
 
-				if ("".equals(loginForm.getHostIp()) || loginForm.getPort() == 0) {
+				if ("".equals(loginForm.getHost()) || loginForm.getPort() == 0) {
 					ApplicationException e = new ApplicationException(ErrorCode.EMPTY_HOST_ADDRESS,
 							"Host Address cannot be Empty");
 					return prepareErrorResponse(logger, e);
@@ -67,7 +67,7 @@ public class LoginController extends BaseController {
 					throw new MongoConnectionException(ErrorCode.INVALID_PORT_NUMBER, "Invalid Port number");
 				}
 
-				ConnectionDetails connectionDetails = new ConnectionDetails(loginForm.getHostIp(), loginForm.getPort(),
+				ConnectionDetails connectionDetails = new ConnectionDetails(loginForm.getHost(), loginForm.getPort(),
 						loginForm.getUsername(), loginForm.getPassword(), loginForm.getDatabase());
 
 				String connectionId = null;

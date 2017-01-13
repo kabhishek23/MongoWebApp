@@ -2,7 +2,6 @@ package com.insfi.mongoui.services;
 
 import java.util.List;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -13,7 +12,7 @@ public interface DatabaseService {
 
 	public List<String> getDbList() throws DatabaseException;
 
-	public JSONArray getDbStats(String dbName) throws DatabaseException, JSONException;
+	public String getDbStats(String dbName) throws DatabaseException, JSONException;
 
 	public String createDb(String dbName) throws DatabaseException;
 

@@ -2,8 +2,10 @@ package com.insfi.mongoui.serviceImpl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.Set;
 
+import org.bson.Document;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -55,9 +57,10 @@ public class DatabaseServiceImpl implements DatabaseService {
 	}
 
 	@Override
-	public JSONArray getDbStats(String dbName) throws DatabaseException, JSONException {
-		// TODO Auto-generated method stub
-		return null;
+	public String getDbStats(String dbName) throws DatabaseException, JSONException {
+		Document statsCommand = new Document("dbstats", 1);
+		Document dbStats = mongoClient.getDatabase(dbName).runCommand(statsCommand);
+		return dbStats.toJson();
 	}
 
 	@Override

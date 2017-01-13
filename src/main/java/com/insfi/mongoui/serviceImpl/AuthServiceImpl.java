@@ -47,7 +47,7 @@ public class AuthServiceImpl implements AuthService {
 	private AuthenticationMechanismFactory credentialManager;
 
 	private AuthServiceImpl() {
-		// TODO Auto-generated constructor stub	
+		// TODO Auto-generated constructor stub
 	}
 
 	@Override
@@ -114,9 +114,12 @@ public class AuthServiceImpl implements AuthService {
 	 */
 	private MongoCredential getMongoCredentials(ConnectionDetails connectionDetails) throws ApplicationException {
 
-		MongoCredential mongoCredentials = credentialManager.createCredentials(connectionDetails.getUsername(),
-				connectionDetails.getDbNames(), connectionDetails.getPassword());
+		MongoCredential mongoCredentials = null;
 
+		if (!connectionDetails.getUsername().equals(null) && !connectionDetails.getPassword().equals(null)) {
+			mongoCredentials = credentialManager.createCredentials(connectionDetails.getUsername(),
+					connectionDetails.getDbNames(), connectionDetails.getPassword());
+		}
 		return mongoCredentials;
 
 	}

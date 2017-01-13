@@ -36,6 +36,8 @@ public class DatabaseServiceImplTest {
 
 	private DatabaseController databaseController;
 
+	private String connectionId;
+
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
 
@@ -46,32 +48,26 @@ public class DatabaseServiceImplTest {
 	}
 
 	@Before
-	public void setUp() throws Exception {
+	public void setUp() {
+		try {
+			request = new MockHttpServletRequest();
 
-		request = new MockHttpServletRequest();
+			loginController = new LoginController();
+			databaseController = new DatabaseController();
 
-		loginController = new LoginController();
-		databaseController = new DatabaseController();
+			loginForm = new LoginFormModel();
+			loginForm.setHost("127.0.0.1");
+			loginForm.setPort(27017);
+			loginForm.setDatabase("migration");
+			loginForm.setUsername("");
+			loginForm.setPassword("");
 
-		loginForm = new LoginFormModel();
-		loginForm.setHostIp("127.0.0.1");
-		loginForm.setPort(27018);
-		loginForm.setDatabase("admin");
-		loginForm.setUsername("insfi");
-		loginForm.setPassword("insfi");
+			JSONObject response = loginController.authenticate(loginForm, null, request);
 
-		/*
-		 * 
-		 * ConnectionDetails connectionDetails = new
-		 * ConnectionDetails("localhost", 27018, "db2user", "password", "db2");
-		 * 
-		 * String connectionId = null;
-		 * 
-		 * try { connectionId = auth.authenticate(connectionDetails, null); }
-		 * catch (ApplicationException e) { fail("failed :" + e.getMessage()); }
-		 * 
-		 * databaseService = new DatabaseServiceImpl(connectionId);
-		 */
+			connectionId = response.getString("connectionId");
+		} catch (Exception e) {
+			fail(e.getMessage());
+		}
 	}
 
 	@After
@@ -81,22 +77,20 @@ public class DatabaseServiceImplTest {
 	@Test
 	public void testGetDbList() throws ApplicationException {
 
-		JSONObject response = loginController.authenticate(loginForm, null, request);
-
-		String connectionId = response.getString("connectionId");
-
-		System.out.println(response.toString());
-
-//		List<String> dbList = new ArrayList<>();
 		JSONObject dbList = databaseController.getDatabaseList(connectionId, request);
 		System.out.println(dbList.toString());
 
 	}
 
-	// @Test
-	// public void testGetDbStats() {
-	// fail("Not yet implemented");
-	// }
+//	@Test
+	public void testGetDbStats() {
+		try {
+			JSONObject dbStats = databaseController.getDatabaseStats("db2", connectionId, request);
+			System.out.println(dbStats.toString());
+		} catch (Exception e) {
+			fail(e.getMessage());
+		}
+	}
 	//
 	// @Test
 	// public void testCreateDb() {
