@@ -1,4 +1,4 @@
-$("#loginForm").submit(function(e) {
+$("#log").submit(function(e) {
 
 	var url = "/login"; // the script where you handle the form input.
 
@@ -7,7 +7,7 @@ $("#loginForm").submit(function(e) {
 		url : url,
 		data : $("#loginForm").serialize(), // serializes the form's elements.
 		success : function(data) {
-			alert(data);
+			console.log(data);
 		}
 	});
 

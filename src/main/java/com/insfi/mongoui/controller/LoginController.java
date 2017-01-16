@@ -39,7 +39,12 @@ public class LoginController extends BaseController {
 
 	private static Logger logger = Logger.getLogger(LoginController.class);
 
-	@RequestMapping(value = "/login", method = RequestMethod.POST, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+	@RequestMapping(value = "/login", method = RequestMethod.GET)
+	public String showLoginForm() {
+		return "login";
+	}
+
+	@RequestMapping(value = "/login", method = RequestMethod.POST, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public JSONObject authenticate(@ModelAttribute("loginForm") LoginFormModel loginForm, BindingResult result,
 			HttpServletRequest request) {
 

@@ -97,7 +97,11 @@ public class AuthServiceImpl implements AuthService {
 		Builder mongoOptions = new MongoClientOptions.Builder();
 		mongoOptions.connectTimeout(2000);
 
-		mongoClient = new MongoClient(serverAddressList, Arrays.asList(credentials), mongoOptions.build());
+		if (credentials != null) {
+			mongoClient = new MongoClient(serverAddressList, Arrays.asList(credentials), mongoOptions.build());
+		} else {
+			mongoClient = new MongoClient(serverAddressList, mongoOptions.build());
+		}
 
 		// get Authenticated db list
 		getAuthenticatedDatabases(mongoClient, connectionDetails);
@@ -116,7 +120,7 @@ public class AuthServiceImpl implements AuthService {
 
 		MongoCredential mongoCredentials = null;
 
-		if (!connectionDetails.getUsername().equals(null) && !connectionDetails.getPassword().equals(null)) {
+		if (!connectionDetails.getUsername().equals("") && !connectionDetails.getPassword().equals("")) {
 			mongoCredentials = credentialManager.createCredentials(connectionDetails.getUsername(),
 					connectionDetails.getDbNames(), connectionDetails.getPassword());
 		}
