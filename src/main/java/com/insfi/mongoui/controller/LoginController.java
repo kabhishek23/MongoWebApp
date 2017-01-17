@@ -11,13 +11,16 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.insfi.mongoui.db.ConnectionDetails;
+import com.insfi.mongoui.db.MongoConnectionDetails;
 import com.insfi.mongoui.exceptions.ApplicationException;
 import com.insfi.mongoui.exceptions.ErrorCode;
 import com.insfi.mongoui.exceptions.MongoConnectionException;
@@ -25,7 +28,7 @@ import com.insfi.mongoui.models.LoginFormModel;
 import com.insfi.mongoui.services.AuthService;
 import com.mongodb.MongoException;
 
-@Controller
+@RestController
 public class LoginController extends BaseController {
 
 	public LoginController() {
@@ -39,24 +42,19 @@ public class LoginController extends BaseController {
 
 	private static Logger logger = Logger.getLogger(LoginController.class);
 
-	@RequestMapping(value = "/login", method = RequestMethod.GET)
-	public String showLoginForm() {
-		return "login";
-	}
-
-	@RequestMapping(value = "/login", method = RequestMethod.POST, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public JSONObject authenticate(@ModelAttribute("loginForm") LoginFormModel loginForm, BindingResult result,
+	@RequestMapping(path = "/login", method = RequestMethod.POST, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+	public String authenticate(@ModelAttribute("loginForm") LoginFormModel loginForm, BindingResult result,
 			HttpServletRequest request) {
 
-		JSONObject response = ErrorTemplate.execute(logger, new ResponseCallback() {
+		String response = ErrorTemplate.execute(logger, new ResponseCallback() {
 
 			@Override
-			public Object execute() throws Exception {
+			public String execute() throws Exception {
 
 				if ("".equals(loginForm.getHost()) || loginForm.getPort() == 0) {
 					ApplicationException e = new ApplicationException(ErrorCode.EMPTY_HOST_ADDRESS,
 							"Host Address cannot be Empty");
-					return prepareErrorResponse(logger, e);
+					throw e;
 				}
 
 				HttpSession session = request.getSession();
@@ -100,12 +98,29 @@ public class LoginController extends BaseController {
 				} catch (JSONException e) {
 					logger.error(e);
 				}
-				return response;
+				return response.toString();
 
 			}
 		});
 
 		return response;
+	}
+
+	@RequestMapping(path = "/connection/details", method = RequestMethod.GET)
+	public String getConnectionDetails(@RequestParam("connectionId") final String connectionId,
+			final HttpServletRequest request) {
+		return ErrorTemplate.execute(logger, new ResponseCallback() {
+
+			@Override
+			public String execute() throws Exception {
+				MongoConnectionDetails mongoConnectionDetails = AUTH_SERVICE.getMongoConnectionDetails(connectionId);
+				ConnectionDetails connectionDetails = mongoConnectionDetails.getConnectionDetails();
+
+				ObjectMapper objectMapper = new ObjectMapper();
+
+				return objectMapper.writeValueAsString(connectionDetails);
+			}
+		});
 	}
 
 }

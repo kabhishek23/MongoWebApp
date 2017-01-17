@@ -36,8 +36,8 @@ public class BaseController {
 	 * @param request
 	 * @return
 	 */
-	protected static JSONObject validateConnection(String connectionId, Logger logger, HttpServletRequest request) {
-		JSONObject response = null;
+	protected static String validateConnection(String connectionId, Logger logger, HttpServletRequest request) {
+		String response = null;
 
 		HttpSession session = request.getSession();
 
@@ -65,7 +65,7 @@ public class BaseController {
 	 * @param e
 	 * @return
 	 */
-	protected static JSONObject prepareErrorResponse(Logger logger, ApplicationException e) {
+	protected static String prepareErrorResponse(Logger logger, ApplicationException e) {
 		JSONObject errorResponse = new JSONObject();
 
 		errorResponse.put("error", true);
@@ -74,16 +74,15 @@ public class BaseController {
 
 		logger.error(errorResponse, e);
 
-		return errorResponse;
+		return errorResponse.toString();
 	}
 
-	protected static JSONObject prepareSuccessResponse(ResponseCallback callback) throws Exception {
-		JSONObject response = new JSONObject();
-		
-		response.put("success", true);
-		response = (JSONObject) callback.execute();
-		
-		return response;
+	protected static String prepareSuccessResponse(ResponseCallback callback) throws Exception {
+		JSONObject response = new JSONObject(callback.execute());
+
+		response.put("error", false);
+
+		return response.toString();
 	}
 
 	/**
@@ -93,8 +92,8 @@ public class BaseController {
 	 *
 	 */
 	protected static class ErrorTemplate {
-		public static JSONObject execute(Logger logger, ResponseCallback callback) {
-			JSONObject response = new JSONObject();
+		public static String execute(Logger logger, ResponseCallback callback) {
+			String response = null;
 
 			try {
 				response = prepareSuccessResponse(callback);
@@ -128,15 +127,15 @@ public class BaseController {
 	 */
 	protected static class ResponseTemplate {
 
-		public JSONObject execute(Logger logger, String connectionId, HttpServletRequest request,
+		public String execute(Logger logger, String connectionId, HttpServletRequest request,
 				ResponseCallback callback) {
 			return execute(logger, connectionId, request, callback, true);
 		}
 
-		public JSONObject execute(Logger logger, String connectionId, HttpServletRequest request,
-				ResponseCallback callback, boolean wrapResult) {
+		public String execute(Logger logger, String connectionId, HttpServletRequest request, ResponseCallback callback,
+				boolean wrapResult) {
 
-			JSONObject response = validateConnection(connectionId, logger, request);
+			String response = validateConnection(connectionId, logger, request);
 
 			if (response != null) {
 				return response;
@@ -147,6 +146,6 @@ public class BaseController {
 	}
 
 	protected interface ResponseCallback {
-		public Object execute() throws Exception;
+		public String execute() throws Exception;
 	}
 }

@@ -58,11 +58,11 @@ public class DatabaseServiceImplTest {
 			loginForm = new LoginFormModel();
 			loginForm.setHost("127.0.0.1");
 			loginForm.setPort(27017);
-			loginForm.setDatabase("migration");
+			loginForm.setDatabase("admin");
 			loginForm.setUsername("");
 			loginForm.setPassword("");
 
-			JSONObject response = loginController.authenticate(loginForm, null, request);
+			JSONObject response = new JSONObject(loginController.authenticate(loginForm, null, request));
 
 			connectionId = response.getString("connectionId");
 		} catch (Exception e) {
@@ -77,15 +77,15 @@ public class DatabaseServiceImplTest {
 	@Test
 	public void testGetDbList() throws ApplicationException {
 
-		JSONObject dbList = databaseController.getDatabaseList(connectionId, request);
-		System.out.println(dbList.toString());
+		String dbList = databaseController.getDatabaseList(connectionId, request);
+		System.out.println(dbList);
 
 	}
 
-//	@Test
+	// @Test
 	public void testGetDbStats() {
 		try {
-			JSONObject dbStats = databaseController.getDatabaseStats("db2", connectionId, request);
+			String dbStats = databaseController.getDatabaseStats("db2", connectionId, request);
 			System.out.println(dbStats.toString());
 		} catch (Exception e) {
 			fail(e.getMessage());

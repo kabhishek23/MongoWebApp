@@ -3,11 +3,16 @@ package com.insfi.mongoui.db;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class ConnectionDetails {
 	private String hostIp;
 	private int port;
 	private String username;
+
+	@JsonIgnore
 	private String password;
+
 	private String dbNames;
 	private Set<String> authenticateddbList = new HashSet<String>();
 
