@@ -5,10 +5,6 @@ class Connection {
 	
 	getDetails(callback) {
 		var url = "/connection/details?connectionId="+ this.connectionId;
-		$.ajax({
-			url : url,
-			type : "GET",
-			success : callback
-		});
+		REST.get(url, callback);
 	}
 }

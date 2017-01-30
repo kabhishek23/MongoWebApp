@@ -3,26 +3,66 @@ var table = "";
 $(document).ready(function() {
 	datatableView();
 
-	var connectionId = Utils.getParameterByName("connectionId");
-	connection = new Connection(connectionId);
-	connection.getDetails(populateConnectionDetails);
+	// fetch connection details and populate HTML
+	connection = getConnectionDetails();
+	// connection.getDetails(populateConnectionDetails);
+
+//	$("#menu").find('li.parent').not(':has(ul)').children('a').on("click", testHTML);
+//	testHTML()
 });
+
+$(function() {
+	$('#menu').metisMenu({
+		toggle : false
+	// disable the auto collapse. Default: true.
+	});
+});
+
+function testHTML() {
+	var htm = '<ul class="nav nav-second-level"><li><a href="#">Collection #1</a><ul class="nav nav-third-level"><li><a href="#">Collection #1</a></li><li><a href="#">Collection #2</a></li></ul></li><li><a href="#">Collection #2</a></li></ul>';
+	$("#menu").find('li.parent').not(':has(ul)').children('a').parent().append(htm);
+}
+
+function getConnectionDetails() {
+	var connectionId = Utils.getParameterByName("connectionId");
+	return new Connection(connectionId);
+}
 
 function populateConnectionDetails(connectionDetails) {
 	connectionDetailsObj = JSON.parse(connectionDetails);
-	console.log(connectionDetailsObj);
+	// console.log(connectionDetailsObj);
+
+	// Error Handler
+	handleError(connectionDetailsObj);
+
+	// display server name
+	displayServerName(connectionDetailsObj.hostIp);
+
+	// populate database list
 	populateDatabaseList(connectionDetailsObj.authenticatedDbList);
+}
+
+function handleError(connectionDetails) {
+	if (connectionDetails.error) {
+		window.location.href = "/";
+	}
+}
+
+function displayServerName(serverName) {
+	$("#server-name").html(serverName);
 }
 
 function populateDatabaseList(databases) {
 	var databaseListHTML = "";
 	if (databases != 'undefined' || databases != "") {
 		for (i = 0; i < databases.length; i++) {
-			databaseListHTML += '<li><a href="#"><i class="fa fa-database fa-fw"></i> '
+			databaseListHTML += '<li><a class="databaseListClass" id="'
+					+ databases[i]
+					+ '" href="javascript:void(0)"><i class="fa fa-database fa-fw"></i> '
 					+ databases[i] + '<span class="fa arrow"></span></a></li>';
 		}
 	}
-	
+
 	$("#side-menu").html(databaseListHTML);
 }
 

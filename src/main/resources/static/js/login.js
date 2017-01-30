@@ -12,7 +12,7 @@ $("#loginForm").submit(
 					var dataObj = JSON.parse(data);
 					console.log(dataObj);
 					if (dataObj.error) {
-						window.location.href = "/index";
+						window.location.href = "/";
 					} else {
 						window.location.href = "/dashboard?connectionId="
 								+ dataObj.connectionId;

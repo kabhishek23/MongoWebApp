@@ -9,6 +9,10 @@ class Utils {
 		return null;
 	}
 	
+	static getConnectionId() {
+		return Utils.getParameterByName("connectionId");
+	}
+	
 	static getUrlVars()
 	{
 	    var vars = [], hash;

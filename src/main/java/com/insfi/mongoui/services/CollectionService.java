@@ -2,9 +2,7 @@ package com.insfi.mongoui.services;
 
 import java.util.Set;
 
-import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import com.insfi.mongoui.exceptions.ApplicationException;
 import com.insfi.mongoui.exceptions.CollectionException;
@@ -14,15 +12,14 @@ public interface CollectionService {
 
 	public Set<String> getCollections(String dbName) throws DatabaseException, CollectionException;
 
-	public JSONObject insertCollection(String dbName, String newCollectionName, boolean capped, int size, int maxDocs,
+	public String insertCollection(String dbName, String newCollectionName, boolean capped, int size, int maxDocs,
 			boolean autoIndexId) throws DatabaseException, CollectionException;
 
-	public JSONObject updateCollection(String dbName, String newCollectionName, boolean capped, int size, int maxDocs,
+	public String updateCollection(String dbName, String newCollectionName, boolean capped, int size, int maxDocs,
 			boolean autoIndexId) throws DatabaseException, CollectionException;
 
-	public JSONObject dropCollection(String dbName, String collectionName)
-			throws DatabaseException, ApplicationException;
+	public String dropCollection(String dbName, String collectionName) throws DatabaseException, ApplicationException;
 
-	public JSONArray getStats(String dbName, String collectionName)
+	public String getStats(String dbName, String collectionName)
 			throws DatabaseException, CollectionException, JSONException;
 }

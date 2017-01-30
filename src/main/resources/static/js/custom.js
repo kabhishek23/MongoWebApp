@@ -25,7 +25,6 @@ $(function() {
 		collapsed : false,
 		withQuotes : false
 	};
-	console.log(input);
 //	$("#json-renderer").html(rawdata);
 	 $('#json-renderer').jsonViewer(input, options);
 });
