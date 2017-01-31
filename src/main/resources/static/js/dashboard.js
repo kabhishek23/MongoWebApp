@@ -5,10 +5,8 @@ $(document).ready(function() {
 
 	// fetch connection details and populate HTML
 	connection = getConnectionDetails();
-	// connection.getDetails(populateConnectionDetails);
+	connection.getDetails(populateConnectionDetails);
 
-//	$("#menu").find('li.parent').not(':has(ul)').children('a').on("click", testHTML);
-//	testHTML()
 });
 
 $(function() {
@@ -17,11 +15,6 @@ $(function() {
 	// disable the auto collapse. Default: true.
 	});
 });
-
-function testHTML() {
-	var htm = '<ul class="nav nav-second-level"><li><a href="#">Collection #1</a><ul class="nav nav-third-level"><li><a href="#">Collection #1</a></li><li><a href="#">Collection #2</a></li></ul></li><li><a href="#">Collection #2</a></li></ul>';
-	$("#menu").find('li.parent').not(':has(ul)').children('a').parent().append(htm);
-}
 
 function getConnectionDetails() {
 	var connectionId = Utils.getParameterByName("connectionId");
@@ -63,7 +56,7 @@ function populateDatabaseList(databases) {
 		}
 	}
 
-	$("#side-menu").html(databaseListHTML);
+	$("#menu").html(databaseListHTML);
 }
 
 /* json Viewer */
