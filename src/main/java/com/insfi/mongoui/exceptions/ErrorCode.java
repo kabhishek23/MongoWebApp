@@ -24,4 +24,10 @@ public interface ErrorCode {
 	
 	public static final String GET_COLLECTION_LIST_EXCEPTION = "GET_COLLECTION_LIST_EXCEPTION";
 
+	public static final String INVALID_MONGO_COMMAND_EXCEPTION = "INVALID_MONGO_COMMAND_EXCEPTION";
+	
+	public static final String QUERY_EXECUTION_EXCEPTION = "QUERY_EXECUTION_EXCEPTION";
+	
+	public static final String EMPTY_COLLECTION_NAME = "EMPTY_COLLECTION_NAME";
+	
 }

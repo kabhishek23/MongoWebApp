@@ -11,8 +11,8 @@ import com.mongodb.DBObject;
 
 public interface DocumentService {
 
-	public JSONObject executeQuery(String dbName, String collectionName, String command, String queryStr, String keys,
-			String sortBy, int limit, int skip, boolean allKeys)
+	public JSONObject executeQuery(String dbName, String collectionName, String command, String query,
+			String projection, String sortBy, int limit, int skip)
 			throws ApplicationException, CollectionException, DocumentException, JSONException;
 
 	public String insertDocument(String dbName, String collectionName, DBObject document)
