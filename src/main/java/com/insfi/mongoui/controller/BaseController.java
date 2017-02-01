@@ -146,6 +146,6 @@ public class BaseController {
 	}
 
 	protected interface ResponseCallback {
-		public String execute() throws Exception;
+		public Object execute() throws Exception;
 	}
 }

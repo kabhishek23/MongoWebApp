@@ -32,21 +32,21 @@ public class DocumentController extends BaseController {
 		String response = new ResponseTemplate().execute(logger, connectionId, request, new ResponseCallback() {
 
 			@Override
-			public String execute() throws Exception {
-				
-				if(command.isEmpty()) {
+			public Object execute() throws Exception {
+
+				if (command.isEmpty()) {
 					throw new InvalidCommandException(ErrorCode.INVALID_MONGO_COMMAND_EXCEPTION, "Command is Empty");
 				}
 
 				DocumentService documentService = new DocumentServiceImpl();
 
-				int numOfDocuments = Integer.valueOf(limit);
-				int numOfDocumentsToSkip = Integer.valueOf(skip);
+				int numOfDocuments = Integer.parseInt(limit);
+				int numOfDocumentsToSkip = Integer.parseInt(skip);
 
 				JSONObject documents = documentService.executeQuery(dbName, collectionName, command, query, projection,
 						sortBy, numOfDocuments, numOfDocumentsToSkip);
-				
-				return documents.toString();
+
+				return documents;
 
 			}
 		});

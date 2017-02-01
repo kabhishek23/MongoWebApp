@@ -1,6 +1,8 @@
 package com.insfi.mongoui.serviceImpl;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.bson.Document;
 import org.json.JSONException;
@@ -14,6 +16,7 @@ import com.insfi.mongoui.exceptions.DocumentException;
 import com.insfi.mongoui.exceptions.ErrorCode;
 import com.insfi.mongoui.services.DatabaseService;
 import com.insfi.mongoui.services.DocumentService;
+import com.insfi.mongoui.utils.QueryExecutor;
 import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoException;
@@ -41,10 +44,38 @@ public class DocumentServiceImpl implements DocumentService {
 			String projection, String sortBy, int limit, int skip)
 			throws ApplicationException, CollectionException, DocumentException, JSONException {
 
-		try {
-			MongoCollection<Document> dbCollection = getCollection(dbName, collectionName);
+		if (dbName == null) {
+			throw new DatabaseException(ErrorCode.EMPTY_DB_NAME, "Database name is null");
+		}
 
-			return null;
+		if (dbName.equals("")) {
+			throw new DatabaseException(ErrorCode.EMPTY_DB_NAME, "Database name is empty");
+		}
+
+		try {
+			List<String> dbList = databaseService.getDbList();
+			if (!dbList.contains(dbName)) {
+				throw new DatabaseException(ErrorCode.DB_NOT_EXIST, "No database found with name " + dbName);
+			}
+
+			MongoDatabase db = mongoClient.getDatabase(dbName);
+
+			if (collectionName == null) {
+				throw new CollectionException(ErrorCode.EMPTY_COLLECTION_NAME, "Collection name is null");
+			}
+
+			if (collectionName.equals("")) {
+				throw new CollectionException(ErrorCode.EMPTY_COLLECTION_NAME, "Collection name is Empty");
+			}
+
+			if (!getCollectionsOfDb(db).contains(collectionName)) {
+				throw new CollectionException(ErrorCode.COLLECTION_DOES_NOT_EXIST,
+						"Collection [ " + collectionName + " ] does not exist");
+			}
+
+			MongoCollection<Document> dbCollection = db.getCollection(collectionName);
+
+			return QueryExecutor.executeQuery(db, dbCollection, command, query, projection, sortBy, limit, skip);
 
 		} catch (MongoException e) {
 			throw new DocumentException(ErrorCode.QUERY_EXECUTION_EXCEPTION, e.getMessage());
@@ -73,51 +104,10 @@ public class DocumentServiceImpl implements DocumentService {
 		return null;
 	}
 
-	/**
-	 * Get Collection to execute Query
-	 * 
-	 * @param dbName
-	 * @param collectionName
-	 * @return
-	 * @throws DatabaseException
-	 * @throws CollectionException
-	 * @throws DocumentException
-	 */
-	private MongoCollection<Document> getCollection(String dbName, String collectionName)
-			throws DatabaseException, CollectionException, DocumentException {
-
-		if (dbName == null) {
-			throw new DatabaseException(ErrorCode.EMPTY_DB_NAME, "Database name is null");
-		}
-
-		if (dbName.equals("")) {
-			throw new DatabaseException(ErrorCode.EMPTY_DB_NAME, "Database name is empty");
-		}
-
-		try {
-			List<String> dbList = databaseService.getDbList();
-			if (!dbList.contains(dbName)) {
-				throw new DatabaseException(ErrorCode.DB_NOT_EXIST, "No database found with name " + dbName);
-			}
-
-			MongoDatabase db = mongoClient.getDatabase(dbName);
-
-			if (collectionName == null) {
-				throw new CollectionException(ErrorCode.EMPTY_COLLECTION_NAME, "Collection name is null");
-			}
-
-			if (collectionName.equals("")) {
-				throw new CollectionException(ErrorCode.EMPTY_COLLECTION_NAME, "Collection name is Empty");
-			}
-
-			MongoCollection<Document> dbCollection = db.getCollection(collectionName);
-
-			return dbCollection;
-
-		} catch (MongoException e) {
-			throw new DocumentException(ErrorCode.QUERY_EXECUTION_EXCEPTION, e.getMessage());
-		}
-
+	private Set<String> getCollectionsOfDb(MongoDatabase db) {
+		Set<String> collectionList = new HashSet<>();
+		db.listCollectionNames().into(collectionList);
+		return collectionList;
 	}
 
 }
