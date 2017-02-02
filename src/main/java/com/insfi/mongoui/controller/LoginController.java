@@ -49,7 +49,7 @@ public class LoginController extends BaseController {
 		String response = ErrorTemplate.execute(logger, new ResponseCallback() {
 
 			@Override
-			public String execute() throws Exception {
+			public Object execute() throws Exception {
 
 				if ("".equals(loginForm.getHost()) || loginForm.getPort() == 0) {
 					ApplicationException e = new ApplicationException(ErrorCode.EMPTY_HOST_ADDRESS,
@@ -98,7 +98,7 @@ public class LoginController extends BaseController {
 				} catch (JSONException e) {
 					logger.error(e);
 				}
-				return response.toString();
+				return response;
 
 			}
 		});
@@ -112,13 +112,13 @@ public class LoginController extends BaseController {
 		return ErrorTemplate.execute(logger, new ResponseCallback() {
 
 			@Override
-			public String execute() throws Exception {
+			public Object execute() throws Exception {
 				MongoConnectionDetails mongoConnectionDetails = AUTH_SERVICE.getMongoConnectionDetails(connectionId);
 				ConnectionDetails connectionDetails = mongoConnectionDetails.getConnectionDetails();
 
 				ObjectMapper objectMapper = new ObjectMapper();
 
-				return objectMapper.writeValueAsString(connectionDetails);
+				return new JSONObject(objectMapper.writeValueAsString(connectionDetails));
 			}
 		});
 	}

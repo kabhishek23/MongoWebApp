@@ -104,6 +104,12 @@ public class DocumentServiceImpl implements DocumentService {
 		return null;
 	}
 
+	/**
+	 * Get Collection List of Database
+	 * 
+	 * @param db
+	 * @return
+	 */
 	private Set<String> getCollectionsOfDb(MongoDatabase db) {
 		Set<String> collectionList = new HashSet<>();
 		db.listCollectionNames().into(collectionList);

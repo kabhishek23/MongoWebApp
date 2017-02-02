@@ -1,28 +1,38 @@
-$("#menu").on(
-		"click",
-		"li a.databaseListClass",
-		function(e) {
-			var db = $(this).attr("id");
+//$("#menu").on("click", "li a.databaseListClass", function(e) {
+//	var db = $(this).attr("id");
+//
+//	loadCollections();
+//
+//	e.preventDefault();
+//});
 
-			var connectionId = Utils.getConnectionId();
+function loadCollections(databaseList) {
+	if (databaseList != 'undefined' || databaseList != "") {
+		for (i = 0; i < databaseList.length; i++) {
+			db = databaseList[i];
+			getCollections(db);
+		}
+	}
+}
 
-			var getCollectionsURL = "/" + db + "/collections?connectionId="
-					+ connectionId;
+function getCollections(database) {
+	var connectionId = Utils.getConnectionId();
 
-			REST.get(getCollectionsURL, populateCollectionsList);
+	var getCollectionsURL = "/" + db + "/collections?connectionId="
+			+ connectionId;
 
-			e.preventDefault();
-		});
+	REST.get(getCollectionsURL, populateCollectionsList);
+}
 
 function populateCollectionsList(collectionsInfoStr) {
 
 	$("#menu").metisMenu('dispose');
 
-	var collectionsInfo = JSON.parse(collectionsInfoStr);
+	var collectionsInfoObj = JSON.parse(collectionsInfoStr);
 
-	console.log(collectionsInfo);
+	var collectionsInfo = collectionsInfoObj.payload;
 
-	if (collectionsInfo.error)
+	if (collectionsInfoObj.error)
 		return;
 
 	var collectionsListHTML = '<ul class="nav nav-second-level"><li><a href="flot.html"><i class="fa fa-th"></i> Collections<span class="fa arrow"></span></a><ul class="nav nav-third-level">';
@@ -36,8 +46,9 @@ function populateCollectionsList(collectionsInfoStr) {
 
 		for (i = 0; i < collections.length; i++) {
 			collectionsListHTML += '<li class="collectionListClass" id="'
-					+ collections[i] + '"><a href="#"><i class="fa fa-table"></i> ' + collections[i]
-					+ '</a></li>'
+					+ collections[i]
+					+ '"><a href="#"><i class="fa fa-table"></i> '
+					+ collections[i] + '</a></li>'
 		}
 	}
 

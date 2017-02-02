@@ -29,7 +29,7 @@ public class DatabaseController extends BaseController {
 		String response = new ResponseTemplate().execute(logger, connectionId, request, new ResponseCallback() {
 
 			@Override
-			public String execute() throws Exception {
+			public Object execute() throws Exception {
 				DatabaseService dbService = new DatabaseServiceImpl(connectionId);
 
 				List<String> dbList = dbService.getDbList();
@@ -37,7 +37,7 @@ public class DatabaseController extends BaseController {
 				JSONObject dbListResponse = new JSONObject();
 				dbListResponse.put("databases", dbList);
 
-				return dbListResponse.toString();
+				return dbListResponse;
 			}
 		});
 
@@ -51,7 +51,7 @@ public class DatabaseController extends BaseController {
 		String response = new ResponseTemplate().execute(logger, connectionId, request, new ResponseCallback() {
 
 			@Override
-			public String execute() throws Exception {
+			public Object execute() throws Exception {
 				DatabaseService dbService = new DatabaseServiceImpl(connectionId);
 				String statsStr = dbService.getDbStats(dbName);
 
@@ -77,7 +77,7 @@ public class DatabaseController extends BaseController {
 		String response = new ResponseTemplate().execute(logger, connectionId, request, new ResponseCallback() {
 
 			@Override
-			public String execute() throws Exception {
+			public Object execute() throws Exception {
 				DatabaseService dbService = new DatabaseServiceImpl(connectionId);
 				String result = dbService.createDb(dbName);
 				return new JSONObject().put("message", result).toString();

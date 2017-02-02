@@ -1,3 +1,66 @@
+@font-face {
+	font-family: 'Open Sans';
+	src: url('../fonts/OpenSans-Regular.ttf') format('truetype');
+}
+
+html {
+	font-family: 'Open Sans', sans-serif;
+	-webkit-text-size-adjust: 100%;
+	-ms-text-size-adjust: 100%;
+}
+
+body {
+	font-family: 'Open Sans', sans-serif;
+}
+
+.right-separator {
+	border-right: 1px solid;
+	border-color: rgba(142, 142, 142, 0.48);
+}
+
+#page-wrapper {
+	margin-top: 50px;
+}
+
+#page-header-right {
+	margin-top: 20px;
+	margin-bottom: 10px;
+	color: rgba(0, 0, 0, 0.64);
+}
+
+.header-right {
+	padding-right: 20px;
+}
+
+.header-right-content {
+	text-align: center;
+}
+
+.header-right-size {
+	display: inline-block;
+	text-align: center;
+}
+
+.header-right-count {
+	display: inline-block;
+}
+
+.header-right-count-value {
+	font-size: 22px;
+	font-weight: 600;
+	margin-left: 5px;
+}
+
+.header-right-size-label {
+	display: block;
+	font-size: 11px;
+}
+
+.header-right-size-value {
+	display: block;
+	font-weight: 400;
+}
+
 .table-responsive {
 	overflow-x: hidden;
 }
@@ -19,6 +82,10 @@
 	right: 19px;
 }
 
-#table-response-id{
+#table-response-id {
 	display: none;
+}
+
+a {
+	color: #023b65;
 }

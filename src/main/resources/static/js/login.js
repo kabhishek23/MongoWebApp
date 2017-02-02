@@ -15,7 +15,7 @@ $("#loginForm").submit(
 						window.location.href = "/";
 					} else {
 						window.location.href = "/dashboard?connectionId="
-								+ dataObj.connectionId;
+								+ dataObj.payload.connectionId;
 					}
 				}
 			});

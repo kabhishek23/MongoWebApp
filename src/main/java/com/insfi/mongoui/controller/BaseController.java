@@ -78,8 +78,11 @@ public class BaseController {
 	}
 
 	protected static String prepareSuccessResponse(ResponseCallback callback) throws Exception {
-		JSONObject response = new JSONObject(callback.execute());
-
+		// JSONObject response = new JSONObject(callback.execute());
+		JSONObject response = new JSONObject();
+		Object result = callback.execute();
+		
+		response.put("payload", result);
 		response.put("error", false);
 
 		return response.toString();

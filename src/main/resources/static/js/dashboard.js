@@ -21,32 +21,42 @@ function getConnectionDetails() {
 	return new Connection(connectionId);
 }
 
-function populateConnectionDetails(connectionDetails) {
-	connectionDetailsObj = JSON.parse(connectionDetails);
+function populateConnectionDetails(connectionDetailStr) {
+	connectionDetailsObj = JSON.parse(connectionDetailStr);
+	connectionDetails = connectionDetailsObj.payload;
+
+	// database List
+	var databaseList = connectionDetails.authenticatedDbList;
+
 	// console.log(connectionDetailsObj);
 
 	// Error Handler
 	handleError(connectionDetailsObj);
 
 	// display server name
-	displayServerName(connectionDetailsObj.hostIp);
+	displayServerName(connectionDetails.hostIp, connectionDetails.port);
 
 	// populate database list
-	populateDatabaseList(connectionDetailsObj.authenticatedDbList);
+	populateDatabaseList(databaseList);
+
+	// load Collections
+	loadCollections(databaseList);
 }
 
-function handleError(connectionDetails) {
-	if (connectionDetails.error) {
+function handleError(connectionDetailsObj) {
+	if (connectionDetailsObj.error) {
 		window.location.href = "/";
 	}
 }
 
-function displayServerName(serverName) {
-	$("#server-name").html(serverName);
+function displayServerName(serverName, portNumber) {
+	var serverInfo = '<li class="sidebar-search"><div> <h4> <i class="fa fa-home"></i> '
+			+ serverName + ':' + portNumber + '</h4></div></li>';
+	$("#menu").html(serverInfo);
 }
 
 function populateDatabaseList(databases) {
-	var databaseListHTML = "";
+	var databaseListHTML = '';
 	if (databases != 'undefined' || databases != "") {
 		for (i = 0; i < databases.length; i++) {
 			databaseListHTML += '<li><a class="databaseListClass" id="'
@@ -56,8 +66,19 @@ function populateDatabaseList(databases) {
 		}
 	}
 
-	$("#menu").html(databaseListHTML);
+	$("#menu").append(databaseListHTML);
 }
+
+/* codemirror */
+var editor = CodeMirror.fromTextArea(document.getElementById("query-executor-editor"), {
+	lineNumbers : true,
+	matchBrackets : true,
+	theme: "dracula",
+	continueComments : "Enter",
+	extraKeys : {
+		"Ctrl-Q" : "toggleComment"
+	}
+});
 
 /* json Viewer */
 function formatJSON(data, id) {

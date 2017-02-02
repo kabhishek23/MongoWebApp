@@ -26,7 +26,7 @@ public class CollectionsController extends BaseController {
 		return ErrorTemplate.execute(logger, new ResponseCallback() {
 
 			@Override
-			public String execute() throws Exception {
+			public Object execute() throws Exception {
 				CollectionService collectionService = new CollectionServiceImpl(connectionId);
 
 				Set<String> collectionList = collectionService.getCollections(dbName);
@@ -35,7 +35,7 @@ public class CollectionsController extends BaseController {
 				result.put("db", dbName);
 				result.put("collections", collectionList);
 
-				return result.toString();
+				return result;
 			}
 		});
 	}

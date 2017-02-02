@@ -6,6 +6,8 @@ import java.util.List;
 import org.bson.Document;
 import org.json.JSONObject;
 
+import com.insfi.mongoui.exceptions.ErrorCode;
+import com.insfi.mongoui.exceptions.InvalidCommandException;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
@@ -13,7 +15,7 @@ import com.mongodb.client.MongoDatabase;
 public class QueryExecutor {
 
 	public static JSONObject executeQuery(MongoDatabase dbName, MongoCollection<Document> dbCollection, String command,
-			String query, String projection, String sortBy, int limit, int skip) {
+			String query, String projection, String sortBy, int limit, int skip) throws InvalidCommandException {
 
 		if (command.equals("find")) {
 			return executeFind(dbCollection, command, query, projection, sortBy, limit, skip);
@@ -21,7 +23,9 @@ public class QueryExecutor {
 		if (command.equals("findOne")) {
 			return executeFindOne(dbCollection, command, query, projection, sortBy, skip);
 		}
-		return null;
+
+		throw new InvalidCommandException(ErrorCode.INVALID_MONGO_COMMAND_EXCEPTION,
+				"Command [ " + command + " ] not supported yet.");
 	}
 
 	private static JSONObject executeFind(MongoCollection<Document> dbCollection, String command, String query,

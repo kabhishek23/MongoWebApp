@@ -64,7 +64,7 @@ public class DatabaseServiceImplTest {
 
 			JSONObject response = new JSONObject(loginController.authenticate(loginForm, null, request));
 
-			connectionId = response.getString("connectionId");
+			connectionId = response.getJSONObject("payload").getString("connectionId");
 		} catch (Exception e) {
 			fail(e.getMessage());
 		}
