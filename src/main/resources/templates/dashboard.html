@@ -34,8 +34,6 @@
 <!-- JSON viewer -->
 <link href="vendor/json-viewer/jquery.json-viewer.css" rel="stylesheet" />
 
-<!-- Dashboard -->
-<link href="css/dashboard.css" rel="stylesheet" type="text/css" />
 
 <!-- codemirror -->
 <link href="vendor/codemirror/codemirror.css" rel="stylesheet"
@@ -43,6 +41,10 @@
 
 <link href="vendor/codemirror/themes/dracula.css" rel="stylesheet"
 	type="text/css" />
+
+<!-- Dashboard -->
+<link href="css/dashboard.css" rel="stylesheet" type="text/css" />
+
 
 
 </head>
@@ -102,11 +104,11 @@
 
 		<div id="page-wrapper">
 			<div class="row page-header">
-				<div class="col-md-6">
-					<h2>migration.incidents</h2>
+				<div class="col-md-5">
+					<h3 class="header-collection-label">migration.incidents</h3>
 				</div>
 
-				<div class="col-md-6">
+				<div class="col-md-7">
 					<div class="row" id="page-header-right">
 						<div class="col-md-6 header-right-content right-separator">
 							<div class="header-right header-right-count">
@@ -148,8 +150,22 @@
 			<!-- end of page header -->
 			<!-- start of text editor -->
 			<div class="row">
-				<div class="col-md-8">
-					<textarea class="form-control" id="query-executor-editor"></textarea>
+				<div class="col-md-12">
+					<div class="row" id="command-editor">
+						<textarea class="form-control" id="query-executor-editor">db.collection.find();</textarea>
+					</div>
+				</div>
+			</div>
+			
+			<!-- end of command editor -->
+			
+			<!-- start of schema explorer -->
+			
+			<div class="row">
+				<div class="col-md-12" id="data-viewer">
+				
+				
+				
 				</div>
 			</div>
 
@@ -160,6 +176,8 @@
 
 <script type="text/javascript" src="vendor/jquery/jquery.min.js"></script>
 <script type="text/javascript" src="js/custom.js"></script>
+
+<script type="text/javascript" src="js/json-formatter.js"></script>
 
 <!-- codemirror -->
 <script type="text/javascript" src="vendor/codemirror/codemirror.js"></script>

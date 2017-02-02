@@ -29,7 +29,7 @@ body {
 }
 
 .header-right {
-	padding-right: 20px;
+	padding-right: 10px;
 }
 
 .header-right-content {
@@ -43,12 +43,13 @@ body {
 
 .header-right-count {
 	display: inline-block;
+	font-size: 11px;
 }
 
 .header-right-count-value {
-	font-size: 22px;
+	font-size: 20px;
 	font-weight: 600;
-	margin-left: 5px;
+	margin-left: 2px;
 }
 
 .header-right-size-label {
@@ -59,6 +60,33 @@ body {
 .header-right-size-value {
 	display: block;
 	font-weight: 400;
+	font-size: 13px;
+}
+
+.header-collection-label {
+	color: #777676;
+}
+
+.CodeMirror {
+	position: relative;
+	overflow: hidden;
+	background: white;
+}
+
+.CodeMirror {
+	font-family: monospace;
+	height: auto;
+	color: black;
+}
+
+.CodeMirror-scroll {
+	max-height: 200px;
+}
+
+.cm-s-dracula.CodeMirror, .cm-s-dracula .CodeMirror-gutters {
+	background-color: rgba(40, 42, 54, 0.61) !important;
+	color: #f8f8f2 !important;
+	border: none;
 }
 
 .table-responsive {
@@ -87,5 +115,5 @@ body {
 }
 
 a {
-	color: #023b65;
+	color: #777676;
 }
