@@ -30,11 +30,6 @@
 <link href="vendor/font-awesome/css/font-awesome.min.css"
 	rel="stylesheet" type="text/css" />
 
-
-<!-- JSON viewer -->
-<link href="vendor/json-viewer/jquery.json-viewer.css" rel="stylesheet" />
-
-
 <!-- codemirror -->
 <link href="vendor/codemirror/codemirror.css" rel="stylesheet"
 	type="text/css" />
@@ -149,25 +144,64 @@
 
 			<!-- end of page header -->
 			<!-- start of text editor -->
-			<div class="row">
-				<div class="col-md-12">
+			<div class="row bottom-horizontal-divider">
+				<div class="col-md-11">
 					<div class="row" id="command-editor">
-						<textarea class="form-control" id="query-executor-editor">db.collection.find();</textarea>
+						<textarea class="form-control" id="query-executor-editor">db.collection.find({'name' : 'abhishek'},{'name' : 1}).limit(1);</textarea>
 					</div>
 				</div>
-			</div>
-			
-			<!-- end of command editor -->
-			
-			<!-- start of schema explorer -->
-			
-			<div class="row">
-				<div class="col-md-12" id="data-viewer">
-				
-				
-				
+				<div class="col-md-1">
+					<p class="btn-primary btn-sm header-right-content">Apply</p>
 				</div>
 			</div>
+
+			<!-- end of command editor -->
+
+			<!-- query execution time -->
+			<div class="row bottom-horizontal-divider">
+				<span class="query-response-time">Query returned <strong>10</strong>
+					documents in <strong>0.04</strong> seconds
+				</span>
+			</div>
+			<!-- end of query execution time -->
+
+			<!-- start of schema explorer -->
+
+
+			<div class="row">
+				<div class="col-md-12 schema-explorer"></div>
+
+			</div>
+
+			<!-- end of schema explorer -->
+
+			<!-- bottom pagingation -->
+
+			<div class="row">
+				<div class="pull-right">
+
+					<nav aria-label="Page navigation">
+						<ul class="pagination pagination-sm">
+							<li><a href="#" aria-label="Previous"> <span
+									aria-hidden="true">&laquo;</span>
+							</a></li>
+							<li><a href="#">1</a></li>
+							<li><a href="#">2</a></li>
+							<li><a href="#">3</a></li>
+							<li><a href="#">4</a></li>
+							<li><a href="#">5</a></li>
+							<li><a href="#" aria-label="Next"> <span
+									aria-hidden="true">&raquo;</span>
+							</a></li>
+						</ul>
+					</nav>
+
+				</div>
+			</div>
+
+			<!-- end of bottom pagination -->
+
+
 
 		</div>
 
@@ -190,14 +224,6 @@
 <!-- Metis Menu Plugin JavaScript -->
 <script src="vendor/metisMenu/metisMenu.min.js"></script>
 
-<!-- JSON Viewer -->
-<script type="text/javascript"
-	src="vendor/json-viewer/jquery.json-viewer.js"></script>
-
-<!-- DataTables JavaScript -->
-<script src="vendor/datatables/js/jquery.dataTables.min.js"></script>
-<script src="vendor/datatables-plugins/dataTables.bootstrap.min.js"></script>
-<script src="vendor/datatables-responsive/dataTables.responsive.js"></script>
 
 <!-- Custom Theme JavaScript -->
 <script src="dist/js/sb-admin-2.js"></script>
@@ -208,5 +234,7 @@
 <script type="text/javascript" src="js/connection.js"></script>
 <script type="text/javascript" src="js/dashboard.js"></script>
 <script type="text/javascript" src="js/databaseOps.js"></script>
+<script type="text/javascript" src="js/CollectionOps.js"></script>
+<script type="text/javascript" src="js/QueryExecutor.js"></script>
 
 </html>
