@@ -25,9 +25,11 @@ public class DocumentController extends BaseController {
 	public String executeQuery(@PathVariable("db") final String dbName,
 			@PathVariable("collection") final String collectionName,
 			@RequestParam("connectionId") final String connectionId, @RequestParam("command") final String command,
-			@RequestParam("query") final String query, @RequestParam("projection") final String projection,
-			@RequestParam("sort") final String sortBy, @RequestParam("limit") final String limit,
-			@RequestParam("skip") final String skip, HttpServletRequest request) {
+			@RequestParam("query") final String query,
+			@RequestParam(value = "projection", required = false) final String projection,
+			@RequestParam(value = "sort", required = false) final String sortBy,
+			@RequestParam(value = "limit", defaultValue = "50") final String limit,
+			@RequestParam(value = "skip", required = false) final String skip, HttpServletRequest request) {
 
 		String response = new ResponseTemplate().execute(logger, connectionId, request, new ResponseCallback() {
 

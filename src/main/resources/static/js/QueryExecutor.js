@@ -10,12 +10,18 @@ var editor = CodeMirror.fromTextArea(document
 	}
 });
 
-// read user input from editor
-var queryString = editor.doc.getValue();
 
-console.log(queryString);
-
-
+class Mongo {
+	static find(connectionId, db, collection, command, query) {
+		var url = "/" + db + "/" + collection + "/documents?connectionId="+ connectionId +"&command="+command+"&query="+query;
+		console.log(url);
+		REST.get(url, Mongo.callback);
+	}
+	
+	static callback(response) {
+		console.log(response);
+	}
+}
 
 class Query {
 	
@@ -23,34 +29,35 @@ class Query {
 		this.queryParts = queryString.split(".");
 	}
 	
+	/**
+	 * Get Collection Name
+	 */
 	get collection() {
 		return this.findCollectionName();
 	}
 	
 	findCollectionName() {
 		if(this.queryParts[1] != undefined) {
-			return this.queryParts[1];
+			var collectionStr =  this.queryParts[1];
+			return collectionStr.substring(collectionStr.indexOf("(") + 2, collectionStr.indexOf(")") - 1);
 		}
 	}
 	
+	/**
+	 * get Command
+	 */
 	get command() {
 		return this.processCommand();
 	}
 	
 	processCommand() {
-		
 		if(this.queryParts[2] != undefined) {
 			var commandStr = this.queryParts[2];
 			return commandStr.split("(")[0];
 		}
-	
-		
 	}
 	
-	
-	
 	processQueryString() {
-		
 		if(this.queryParts[2] != undefined) {
 			var commandStr = this.queryParts[2];
 			var startIndex = commandStr.indexOf("(");
@@ -58,8 +65,6 @@ class Query {
 			
 			return commandStr.substring(startIndex + 1, endIndex);
 		}
-	
-		
 	}
 	
 	get query() {
@@ -89,7 +94,6 @@ class Query {
 					return commandStr.substring(commandStr.indexOf("(") + 1, commandStr.indexOf(")"));
 				} 
 			}
-		
 	}
 	
 	get sort() {
@@ -124,16 +128,7 @@ class Query {
 				return 4;
 			}
 		}
-	
-		
 	}
 	
 }
 
-var query = new Query(queryString);
-console.log(query.collection);
-console.log(query.command);
-console.log(query.query);
-console.log(query.projection);
-console.log(query.sort);
-console.log(query.limit);

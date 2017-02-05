@@ -39,9 +39,43 @@ renderDocument = function(mongoDocument) {
 	$(".schema-explorer").append(element);
 };
 
-prepareDocumentToRender = function(formattedDoc) {
+renderDocument(sampleDocument);
+renderDocument(sampleDocument);
+
+/* find documents */
+
+var constructFindQuery = function(collection) {
+	var findQueryStr = "db.getCollection('" + collection + "').find({})";
+
+	editor.doc.setValue(findQueryStr);
 
 }
 
-renderDocument(sampleDocument);
-renderDocument(sampleDocument);
+var fetchDocuments = function(element) {
+	dbName = $(element).attr("dbName");
+
+	// bind db with editor instance
+	editor.dbInstance = dbName;
+
+	collectionName = $(element).attr("id");
+
+	$("#collection-cname").html(dbName + "." + collectionName);
+
+	// update query in queryEditor
+	constructFindQuery(collectionName);
+
+	query = editor.doc.getValue();
+
+	queryDbForDocuments(query);
+
+}
+
+var queryDbForDocuments = function(queryStr) {
+	query = new Query(queryStr);
+
+	var connectionId = Utils.getConnectionId();
+
+	Mongo.find(connectionId, editor.dbInstance, query.collection,
+			query.command, query.query);
+
+}

@@ -98,70 +98,74 @@
 		</nav>
 
 		<div id="page-wrapper">
-			<div class="row page-header">
-				<div class="col-md-5">
-					<h3 class="header-collection-label">migration.incidents</h3>
-				</div>
+			<div class="row">
+				<div class="col-md-12 page-header">
+					<div class="header-left"><h4 id="collection-cname">migration.incidents</h4></div>
+					<div class="header-right" id="header-right">
 
-				<div class="col-md-7">
-					<div class="row" id="page-header-right">
-						<div class="col-md-6 header-right-content right-separator">
-							<div class="header-right header-right-count">
-								DOCUMENTS <span id="document-count"
-									class="header-right-count-value">10</span>
+						<div class="db-stats">
+							<div class="stats-label">
+								DOCUMENTS<span class="db-stats-count-value"> 10</span>
 							</div>
-							<div class="header-right header-right-size">
-								<span class="header-right-size-label">total size</span> <span
-									class="header-right-size-value" id="document-total-size">53.4
-									KB</span>
-							</div>
-							<div class="header-right header-right-size">
-								<span class="header-right-size-label">average size</span> <span
-									class="header-right-size-value" id="document-average-size">13.4
-									KB</span>
-							</div>
+							<!-- <div id="document-count" class="stats-value">10</div> -->
 						</div>
-						<div class="col-md-6 header-right-content">
-							<div class="header-right header-right-count">
-								INDEXES <span id="indexes-count"
-									class="header-right-count-value">02</span>
+
+						<div class="db-stats">
+							<div class="stats-label">Total size</div>
+							<div class="stats-value" id="document-total-size">53.4 KB</div>
+						</div>
+
+						<div class="db-stats">
+							<div class="stats-label">Average size</div>
+							<div class="stats-value" id="document-average-size">13.4 KB</div>
+						</div>
+
+						<div class="right-separator"></div>
+
+						<div class="db-stats">
+							<div class="stats-label">
+								INDEXES<span class="db-stats-count-value"> 02</span>
 							</div>
-							<div class="header-right header-right-size">
-								<span class="header-right-size-label">total size</span> <span
-									class="header-right-size-value" id="indexes-total-size">3.4
-									KB</span>
-							</div>
-							<div class="header-right header-right-size">
-								<span class="header-right-size-label">average size</span> <span
-									class="header-right-size-value" id="indexes-average-size">1.4
-									KB</span>
-							</div>
+							<!-- <div class="stats-value" id="indexes-count">02</div> -->
+						</div>
+
+						<div class="db-stats">
+							<div class="stats-label">Total size</div>
+							<div class="stats-value" id="indexes-total-size">3.4 KB</div>
+						</div>
+
+						<div class="db-stats">
+							<div class="stats-label">Average size</div>
+							<div class="stats-value" id="indexes-average-size">1.4 KB</div>
 						</div>
 
 					</div>
 				</div>
 			</div>
+
 
 			<!-- end of page header -->
 			<!-- start of text editor -->
 			<div class="row bottom-horizontal-divider">
 				<div class="col-md-11">
 					<div class="row" id="command-editor">
-						<textarea class="form-control" id="query-executor-editor">db.collection.find({'name' : 'abhishek'},{'name' : 1}).limit(1);</textarea>
+						<textarea class="form-control" id="query-executor-editor">db.getCollection("incidents").find({'name' : 'abhishek'},{'name' : 1}).limit(1);</textarea>
 					</div>
 				</div>
 				<div class="col-md-1">
-					<p class="btn-primary btn-sm header-right-content">Apply</p>
+					<button class="btn btn-default apply" type="button">Apply</button>
 				</div>
 			</div>
+
 
 			<!-- end of command editor -->
 
 			<!-- query execution time -->
 			<div class="row bottom-horizontal-divider">
-				<span class="query-response-time">Query returned <strong>10</strong>
-					documents in <strong>0.04</strong> seconds
-				</span>
+				<div class="query-response-time">
+					Query returned <strong>10</strong> documents in <strong>0.04</strong>
+					seconds
+				</div>
 			</div>
 			<!-- end of query execution time -->
 
@@ -201,11 +205,10 @@
 
 			<!-- end of bottom pagination -->
 
-
-
 		</div>
 
 	</div>
+
 </body>
 
 <script type="text/javascript" src="vendor/jquery/jquery.min.js"></script>
