@@ -12,15 +12,15 @@ var editor = CodeMirror.fromTextArea(document
 
 
 class Mongo {
-	static find(connectionId, db, collection, command, query) {
+	static find(connectionId, db, collection, command, query, callback) {
 		var url = "/" + db + "/" + collection + "/documents?connectionId="+ connectionId +"&command="+command+"&query="+query;
 		console.log(url);
-		REST.get(url, Mongo.callback);
+		REST.get(url, callback);
 	}
 	
-	static callback(response) {
-		console.log(response);
-	}
+//	static callback(response) {
+//		console.log(response);
+//	}
 }
 
 class Query {

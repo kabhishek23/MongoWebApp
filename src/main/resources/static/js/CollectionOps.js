@@ -10,7 +10,7 @@ var sampleDocument = {
 renderDocument = function(mongoDocument) {
 
 	var config = {
-		hoverPreviewEnabled : true,
+		hoverPreviewEnabled : false,
 		hoverPreviewArrayCount : 100,
 		hoverPreviewFieldCount : 5,
 		theme : '',
@@ -18,7 +18,7 @@ renderDocument = function(mongoDocument) {
 		animateClose : true
 	}
 
-	formatter = new JSONFormatter(mongoDocument, 1, config);
+	formatter = new JSONFormatter(mongoDocument, 1, config, mongoDocument._id);
 
 	formattedDoc = formatter.render();
 
@@ -38,9 +38,6 @@ renderDocument = function(mongoDocument) {
 
 	$(".schema-explorer").append(element);
 };
-
-renderDocument(sampleDocument);
-renderDocument(sampleDocument);
 
 /* find documents */
 
@@ -66,16 +63,39 @@ var fetchDocuments = function(element) {
 
 	query = editor.doc.getValue();
 
-	queryDbForDocuments(query);
+	queryDbForDocuments(query, processAndRenderDocuments);
 
 }
 
-var queryDbForDocuments = function(queryStr) {
+/**
+ * Execute query, Input from QueryExecutor
+ */
+var executeQuery = function() {
+	
+	var queryStr = editor.doc.getValue();
+
+	queryDbForDocuments(queryStr, processAndRenderDocuments);
+}
+
+var queryDbForDocuments = function(queryStr, callback) {
 	query = new Query(queryStr);
 
 	var connectionId = Utils.getConnectionId();
 
 	Mongo.find(connectionId, editor.dbInstance, query.collection,
-			query.command, query.query);
+			query.command, query.query, callback);
 
+}
+
+var processAndRenderDocuments = function(documentResource) {
+
+	$(".schema-explorer").html("");
+
+	var documentSourceObj = JSON.parse(documentResource);
+
+	var documentList = documentSourceObj.payload.documents;
+
+	for (i = 0; i < documentList.length; i++) {
+		renderDocument(documentList[i]);
+	}
 }

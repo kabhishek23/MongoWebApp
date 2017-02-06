@@ -7,6 +7,7 @@ import java.util.Set;
 import org.bson.Document;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.insfi.mongoui.exceptions.ApplicationException;
@@ -14,6 +15,7 @@ import com.insfi.mongoui.exceptions.CollectionException;
 import com.insfi.mongoui.exceptions.DatabaseException;
 import com.insfi.mongoui.exceptions.DocumentException;
 import com.insfi.mongoui.exceptions.ErrorCode;
+import com.insfi.mongoui.services.AuthService;
 import com.insfi.mongoui.services.DatabaseService;
 import com.insfi.mongoui.services.DocumentService;
 import com.insfi.mongoui.utils.QueryExecutor;
@@ -36,8 +38,21 @@ public class DocumentServiceImpl implements DocumentService {
 
 	private MongoClient mongoClient;
 
+	private static AuthService AUTH_SERVICE;
+
 	public DocumentServiceImpl() {
 	}
+
+	@Autowired
+	public DocumentServiceImpl(AuthService auth) {
+		AUTH_SERVICE = auth;
+	}
+	
+	public DocumentServiceImpl(String connectionId) throws ApplicationException {
+		mongoClient = AUTH_SERVICE.getMongoClientInstace(connectionId);
+		databaseService = new DatabaseServiceImpl(connectionId);
+	}
+	
 
 	@Override
 	public JSONObject executeQuery(String dbName, String collectionName, String command, String query,

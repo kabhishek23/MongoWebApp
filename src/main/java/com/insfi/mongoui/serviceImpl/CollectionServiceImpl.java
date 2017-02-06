@@ -8,8 +8,6 @@ import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.insfi.mongoui.db.ConnectionDetails;
-import com.insfi.mongoui.db.MongoConnectionDetails;
 import com.insfi.mongoui.exceptions.ApplicationException;
 import com.insfi.mongoui.exceptions.CollectionException;
 import com.insfi.mongoui.exceptions.DatabaseException;

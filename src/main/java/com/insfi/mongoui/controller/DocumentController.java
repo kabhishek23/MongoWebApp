@@ -29,7 +29,7 @@ public class DocumentController extends BaseController {
 			@RequestParam(value = "projection", required = false) final String projection,
 			@RequestParam(value = "sort", required = false) final String sortBy,
 			@RequestParam(value = "limit", defaultValue = "50") final String limit,
-			@RequestParam(value = "skip", required = false) final String skip, HttpServletRequest request) {
+			@RequestParam(value = "skip", defaultValue = "0") final String skip, HttpServletRequest request) {
 
 		String response = new ResponseTemplate().execute(logger, connectionId, request, new ResponseCallback() {
 
@@ -40,7 +40,7 @@ public class DocumentController extends BaseController {
 					throw new InvalidCommandException(ErrorCode.INVALID_MONGO_COMMAND_EXCEPTION, "Command is Empty");
 				}
 
-				DocumentService documentService = new DocumentServiceImpl();
+				DocumentService documentService = new DocumentServiceImpl(connectionId);
 
 				int numOfDocuments = Integer.parseInt(limit);
 				int numOfDocumentsToSkip = Integer.parseInt(skip);

@@ -24,13 +24,11 @@ function populateConnectionDetails(connectionDetailStr) {
 	connectionDetailsObj = JSON.parse(connectionDetailStr);
 	connectionDetails = connectionDetailsObj.payload;
 
-	// database List
-	var databaseList = connectionDetails.authenticatedDbList;
-
-	// console.log(connectionDetailsObj);
-
 	// Error Handler
 	handleError(connectionDetailsObj);
+
+	// database List
+	var databaseList = connectionDetails.authenticatedDbList;
 
 	// display server name
 	displayServerName(connectionDetails.hostIp, connectionDetails.port);
@@ -67,4 +65,3 @@ function populateDatabaseList(databases) {
 
 	$("#menu").append(databaseListHTML);
 }
-

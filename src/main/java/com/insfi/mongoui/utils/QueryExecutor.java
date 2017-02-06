@@ -10,6 +10,7 @@ import com.insfi.mongoui.exceptions.ErrorCode;
 import com.insfi.mongoui.exceptions.InvalidCommandException;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
 
 public class QueryExecutor {
@@ -35,21 +36,21 @@ public class QueryExecutor {
 		Document project = new Document();
 		Document sortObj = new Document();
 
-		if (!query.isEmpty()) {
+		if (query != null) {
 			filter = Document.parse(query);
 		}
 
-		if (!projection.isEmpty()) {
+		if (projection != null) {
 			project = Document.parse(projection);
 		}
 
-		if (!sortBy.isEmpty()) {
+		if (sortBy != null) {
 			sortObj = Document.parse(sortBy);
 		}
 
 		FindIterable<Document> findIterable = null;
 
-		if (!project.isEmpty()) {
+		if (project != null) {
 			findIterable = dbCollection.find(filter).projection(project);
 		} else {
 			findIterable = dbCollection.find(filter);
@@ -57,11 +58,25 @@ public class QueryExecutor {
 
 		findIterable.sort(sortObj).skip(skip).limit(limit);
 
-		List<Document> documents = new ArrayList<Document>();
-
-		findIterable.into(documents);
+		List<Document> documents = processResultSet(findIterable);
 
 		return AppUtils.constructResponse(documents);
+	}
+
+	private static List<Document> processResultSet(FindIterable<Document> findIterable) {
+		MongoCursor<Document> itr = findIterable.iterator();
+		List<Document> documents = new ArrayList<Document>();
+		while (itr.hasNext()) {
+			Document nextDoc = itr.next();
+
+			String objectId = String.format("ObjectId(\"%s\")", new Object[] { nextDoc.get("_id").toString() });
+
+			nextDoc.replace("_id", objectId);
+
+			documents.add(nextDoc);
+		}
+
+		return documents;
 	}
 
 	private static JSONObject executeFindOne(MongoCollection<Document> dbCollection, String command, String query,
