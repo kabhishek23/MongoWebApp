@@ -47,12 +47,11 @@ public class DocumentServiceImpl implements DocumentService {
 	public DocumentServiceImpl(AuthService auth) {
 		AUTH_SERVICE = auth;
 	}
-	
+
 	public DocumentServiceImpl(String connectionId) throws ApplicationException {
 		mongoClient = AUTH_SERVICE.getMongoClientInstace(connectionId);
 		databaseService = new DatabaseServiceImpl(connectionId);
 	}
-	
 
 	@Override
 	public JSONObject executeQuery(String dbName, String collectionName, String command, String query,

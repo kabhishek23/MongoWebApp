@@ -1,25 +1,25 @@
 $("#loginForm").submit(
-		function(e) {
+        function (e) {
 
-			var url = "/login"; // the script where you handle the form input.
+            var url = "/login"; // the script where you handle the form input.
 
-			$.ajax({
-				type : "POST",
-				url : url,
-				data : $("#loginForm").serialize(), // serializes the form's
-				// elements.
-				success : function(data) {
-					var dataObj = JSON.parse(data);
-					console.log(dataObj);
-					if (dataObj.error) {
-						window.location.href = "/";
-					} else {
-						window.location.href = "/dashboard?connectionId="
-								+ dataObj.payload.connectionId;
-					}
-				}
-			});
+            $.ajax({
+                type : "POST",
+                url : url,
+                data : $("#loginForm").serialize(), // serializes the form's
+                // elements.
+                success : function (data) {
+                    var dataObj = JSON.parse(data);
+                    console.log(dataObj);
+                    if (dataObj.error) {
+                        window.location.href = "/";
+                    } else {
+                        window.location.href = "/dashboard?connectionId="
+                                + dataObj.payload.connectionId;
+                    }
+                }
+            });
 
-			e.preventDefault(); // avoid to execute the actual submit of the
-			// form.
-		});
+            e.preventDefault(); // avoid to execute the actual submit of the
+            // form.
+        });

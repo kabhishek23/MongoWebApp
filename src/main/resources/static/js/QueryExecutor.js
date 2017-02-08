@@ -17,10 +17,6 @@ class Mongo {
 		console.log(url);
 		REST.get(url, callback);
 	}
-	
-//	static callback(response) {
-//		console.log(response);
-//	}
 }
 
 class Query {
@@ -30,8 +26,8 @@ class Query {
 	}
 	
 	/**
-	 * Get Collection Name
-	 */
+     * Get Collection Name
+     */
 	get collection() {
 		return this.findCollectionName();
 	}
@@ -44,8 +40,8 @@ class Query {
 	}
 	
 	/**
-	 * get Command
-	 */
+     * get Command
+     */
 	get command() {
 		return this.processCommand();
 	}
